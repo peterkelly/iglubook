@@ -4,3 +4,6 @@
 node_modules/
 platforms/
 plugins/
+backend/build/
+backend/node_modules/
+backend/typings/
