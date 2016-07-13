@@ -78,20 +78,33 @@ angular.module('starter', ['ionic'])
     $urlRouterProvider.otherwise("/login")
 })
 
-.service("api",function($timeout,$q) {
+.service("api",function($timeout,$q,$http) {
     return {
+        // getFeedContents: function() {
+        //     return $q(function(resolve,reject) {
+        //         $timeout(function() {
+        //             resolve([
+        //                 { id: 1, content: "First post" },
+        //                 { id: 2, content: "Second post" },
+        //                 { id: 3, content: "Third post" },
+        //                 { id: 4, content: "Fourth post" },
+        //                 { id: 5, content: "Fifth post" },
+        //                 { id: 6, content: "Sixth post" },
+        //             ]);
+        //         },2000);
+        //     });
+        // }
         getFeedContents: function() {
             return $q(function(resolve,reject) {
-                $timeout(function() {
-                    resolve([
-                        { id: 1, content: "First post" },
-                        { id: 2, content: "Second post" },
-                        { id: 3, content: "Third post" },
-                        { id: 4, content: "Fourth post" },
-                        { id: 5, content: "Fifth post" },
-                        { id: 6, content: "Sixth post" },
-                    ]);
-                },2000);
+                $http({
+                    method: "GET",
+                    url: "http://localhost:3000/posts",
+                }).then(function(response) {
+                    console.log("Resposne",response);
+                    resolve(response.data);
+                }).catch(function(error) {
+                    reject(error);
+                });
             });
         }
     }
