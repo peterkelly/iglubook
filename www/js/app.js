@@ -76,25 +76,85 @@ angular.module('starter', ['ionic'])
     })
 
     $urlRouterProvider.otherwise("/login")
-
 })
 
-.controller("FeedCtrl",function($scope) {
+.service("api",function($timeout,$q) {
+    return {
+        getFeedContents: function() {
+            return $q(function(resolve,reject) {
+                $timeout(function() {
+                    resolve([
+                        { id: 1, content: "First post" },
+                        { id: 2, content: "Second post" },
+                        { id: 3, content: "Third post" },
+                        { id: 4, content: "Fourth post" },
+                        { id: 5, content: "Fifth post" },
+                        { id: 6, content: "Sixth post" },
+                    ]);
+                },2000);
+            });
+        }
+    }
+})
+
+.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,api) {
+    // $scope.viewTitle = "Feed";
+    // console.log("feed: viewTitle = "+$scope.viewTitle);
+    // $scope.viewTitle = "Known";
+    // console.log("feed: viewTitle = "+$scope.viewTitle);
+    $scope.viewTitle.value = "Feed";
+    $scope.posts = [];
+
+    $scope.buttonPressed = function() {
+        console.log("buttonPressed");
+        $ionicLoading.show({
+            template: "Loading..."
+        }).then(function() {
+            console.log("Loading indicator now displayed");
+
+            $timeout(function() {
+                $ionicLoading.hide().then(function() {
+                    console.log("Loading indicator now hidden");
+                });
+
+            },2000);
+        });
+    }
+
+    $scope.doRefresh = function() {
+        api.getFeedContents().then(function(posts) {
+            console.log("getFeedContents: success");
+            $scope.posts = posts;
+        }).catch(function(error) {
+            console.log("getFeedContents: failure: "+error);
+        }).finally(function() {
+            $scope.$broadcast("scroll.refreshComplete");
+        });
+    }
 })
 
 .controller("CommentsCtrl",function($scope) {
+    // $scope.viewTitle = "Comments";
+    $scope.viewTitle.value = "Comments";
 })
 
 .controller("ProfileCtrl",function($scope) {
+    $scope.viewTitle.value = "Profile";
 })
 
 .controller("FriendsCtrl",function($scope) {
+    $scope.viewTitle.value = "Friends";
 })
 
 .controller("LogoutCtrl",function($scope) {
+    $scope.viewTitle.value = "Logout";
 })
 
 .controller("MainCtrl",function($scope,$ionicSideMenuDelegate,$state,$timeout) {
+    $scope.viewTitle = { value: "Unknown!!!!" };
+    $scope.toggleMenu = function() {
+        $ionicSideMenuDelegate.toggleLeft();
+    }
 })
 
 
