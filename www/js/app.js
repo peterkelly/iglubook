@@ -33,7 +33,8 @@ angular.module('starter', ['ionic'])
         url: "/feed",
         views: {
             "content": {
-                templateUrl: "feed.html"
+                templateUrl: "feed.html",
+                controller: "FeedCtrl",
             }
         }
     })
@@ -41,7 +42,8 @@ angular.module('starter', ['ionic'])
         url: "/feed/comments",
         views: {
             "content": {
-                templateUrl: "comments.html"
+                templateUrl: "comments.html",
+                controller: "CommentsCtrl",
             }
         }
     })
@@ -49,7 +51,8 @@ angular.module('starter', ['ionic'])
         url: "/profile",
         views: {
             "content": {
-                templateUrl: "profile.html"
+                templateUrl: "profile.html",
+                controller: "ProfileCtrl",
             }
         }
     })
@@ -57,7 +60,8 @@ angular.module('starter', ['ionic'])
         url: "/friends",
         views: {
             "content": {
-                templateUrl: "friends.html"
+                templateUrl: "friends.html",
+                controller: "FriendsCtrl",
             }
         }
     })
@@ -65,7 +69,8 @@ angular.module('starter', ['ionic'])
         url: "/logout",
         views: {
             "content": {
-                templateUrl: "logout.html"
+                templateUrl: "logout.html",
+                controller: "LogoutCtrl",
             }
         }
     })
@@ -74,45 +79,22 @@ angular.module('starter', ['ionic'])
 
 })
 
-.controller("MainCtrl",function ($scope,$ionicSideMenuDelegate,$state,$timeout) {
-    /*
-    $scope.hideSideMenu = function() {
-        $ionicSideMenuDelegate.toggleLeft();
-    }
+.controller("FeedCtrl",function($scope) {
+})
 
-    $scope.feedSelected = function() {
-        // console.log($ionicSideMenuDelegate);
-        $ionicSideMenuDelegate.toggleLeft();
-        $state.go("main.feed",{ relative: false });
-        // $timeout(function() {
-        //     $ionicSideMenuDelegate.toggleLeft();
-        // },100);
-    }
+.controller("CommentsCtrl",function($scope) {
+})
 
-    $scope.profileSelected = function() {
-        $ionicSideMenuDelegate.toggleLeft();
-        $state.go("main.profile",{ relative: false });
-        // $timeout(function() {
-        //     $ionicSideMenuDelegate.toggleLeft();
-        // },100);
-    }
+.controller("ProfileCtrl",function($scope) {
+})
 
-    $scope.friendsSelected = function() {
-        $ionicSideMenuDelegate.toggleLeft();
-        $state.go("main.friends",{ relative: false });
-        // $timeout(function() {
-        //     $ionicSideMenuDelegate.toggleLeft();
-        // },100);
-    }
+.controller("FriendsCtrl",function($scope) {
+})
 
-    $scope.logoutSelected = function() {
-        $ionicSideMenuDelegate.toggleLeft();
-        $state.go("main.logout",{ relative: false });
-        // $timeout(function() {
-        //     $ionicSideMenuDelegate.toggleLeft();
-        // },100);
-    }
-    */
+.controller("LogoutCtrl",function($scope) {
+})
+
+.controller("MainCtrl",function($scope,$ionicSideMenuDelegate,$state,$timeout) {
 })
 
 
