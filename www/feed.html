@@ -1,3 +1,12 @@
+<ion-header-bar class="bar-stable">
+    <button class="button button-icon" ng-click="toggleMenu()">
+        <i class="icon ion-navicon"></i>
+    </button>
+    <h1 class="title">News Feed</h1>
+    <button class="button button-icon" on-tap="composePressed()">
+        <i class="icon ion-compose"></i>
+    </button>
+</ion-header-bar>
 <ion-view view-title="Feed" ng-controller="FeedCtrl">
     <ion-content>
         <ion-refresher pulling-text="Pull to retrieve latest posts" on-refresh="doRefresh()"></ion-refresher>

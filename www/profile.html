@@ -1,10 +1,18 @@
+<ion-header-bar class="bar-stable">
+    <button class="button button-icon" ng-click="toggleMenu()">
+        <i class="icon ion-navicon"></i>
+    </button>
+    <h1 class="title">My Profile</h1>
+</ion-header-bar>
 <ion-view view-title="Profile" ng-controller="ProfileCtrl">
     <ion-content>
         <div ng-switch="user">
             <div ng-switch-when="null">
-                <div class="text-center">
-                    <h2>Loading</h2>
-                    <ion-spinner class="ios spinner"></ion-spinner>
+                <div class="padding">
+                    <div class="text-center">
+                        <ion-spinner class="ios spinner"></ion-spinner>
+                        <div>Loading</div>
+                    </div>
                 </div>
             </div>
             <div ng-switch-default>
