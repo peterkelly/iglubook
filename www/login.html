@@ -1,18 +1,18 @@
-<ion-content>
+<ion-content ng-controller="LoginCtrl">
     <div class="padding">
         <h1>IgluBook</h1>
         <div class="card">
             <div class="item item-input">
-                <input type="text" placeholder="Email">
+                <input type="text" placeholder="Email" ng-model="email">
             </div>
             <div class="item item-input">
-                <input type="password" placeholder="Password">
+                <input type="password" placeholder="Password" ng-model="password">
             </div>
         </div>
-        <button class="button button-block button-positive" ui-sref="main.feed">Log in</button>
+        <button class="button button-block button-positive" on-tap="loginPressed()">Log in</button>
         <div>
             Don't have an account yet? Sign up for free!
         </div>
-        <button class="button button-block button-positive" ui-sref="signup">Sign up</button>
+        <button class="button button-block button-positive" on-tap="signupPressed()">Sign up</button>
     </div>
 </ion-content>

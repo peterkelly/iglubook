@@ -1,5 +1,11 @@
-<ion-view view-title="Friends">
+<ion-view view-title="Friends" ng-controller="FriendsCtrl">
     <ion-content>
-        <p>Friends screen</p>
+        <ion-list>
+            <div class="item item-avatar" ng-repeat="friend in friends">
+                <img src="user1-thumb.png" width="75" height="75">
+                <h2>{{friend.firstName}} {{friend.lastName}}</h2>
+                <p>{{friend.gender}}, {{friend.country}}</p>
+            </div>
+        </ion-list>
     </ion-content>
 </ion-view>
