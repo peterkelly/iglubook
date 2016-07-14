@@ -28,6 +28,23 @@ if (isNewDb) {
             stmt.run("Third post","Content of the third post");
             stmt.run("Fourth post","Content of the fourth post");
             stmt.finalize();
+
+            db.run("create table if not exists user (\n"+
+                   "    id integer primary key,\n"+
+                   "    email text,\n"+
+                   "    password text,\n"+
+                   "    firstName text,\n"+
+                   "    lastName text,\n"+
+                   "    gender text,\n"+
+                   "    age integer,\n"+
+                   "    profileImageId integer\n"+
+                   ")");
+
+            db.run("create table if not exists image (\n"+
+                   "    id integer primary key,\n"+
+                   "    width integer,\n"+
+                   "    height integer\n"+
+                   ")");
         });
     }
     catch (e) {

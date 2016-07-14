@@ -7,3 +7,4 @@ plugins/
 backend/build/
 backend/node_modules/
 backend/typings/
+backend/iglubook.sqlite3
