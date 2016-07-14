@@ -43,19 +43,20 @@ app.config(function ($stateProvider,$urlRouterProvider) {
     })
     .state("main.feed",{
         url: "/feed",
+        abstract: true,
         views: {
             "content": {
                 templateUrl: "feed.html",
             }
         }
     })
-    .state("main.comments",{
-        url: "/feed/comments",
-        views: {
-            "content": {
-                templateUrl: "comments.html",
-            }
-        }
+    .state("main.feed.posts",{
+        url: "/posts",
+        templateUrl: "feed-posts.html",
+    })
+    .state("main.feed.comments",{
+        url: "/comments",
+        templateUrl: "feed-comments.html",
     })
     .state("main.profile",{
         url: "/profile",
@@ -130,7 +131,7 @@ app.controller("LoginCtrl",function($scope,$state,$timeout,$ionicLoading) {
         $ionicLoading.show().then(function() {
             $timeout(function() {
                 $ionicLoading.hide();
-                $state.go("main.feed");
+                $state.go("main.feed.posts");
             },1500);
         });
     };
@@ -146,7 +147,7 @@ app.controller("SignupCtrl",function($scope) {
 
 });
 
-app.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,api) {
+app.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,$state,api) {
     // $scope.viewTitle = "Feed";
     // console.log("feed: viewTitle = "+$scope.viewTitle);
     // $scope.viewTitle = "Known";
@@ -180,6 +181,11 @@ app.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,api) {
             $scope.$broadcast("scroll.refreshComplete");
         });
     };
+
+    $scope.commentsPressed = function(post) {
+        console.log("Comments pressed: "+post.id);
+        $state.go("main.feed.comments");
+    }
 
     $scope.doRefresh();
 });
