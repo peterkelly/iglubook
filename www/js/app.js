@@ -1,30 +1,24 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-var app = angular.module('starter', ['ionic']);
+var app = angular.module("iglubook",["ionic"]);
 
 app.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    $ionicPlatform.ready(function() {
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
+            // Don't remove this line unless you know what you are doing. It stops the viewport
+            // from snapping when text inputs are focused. Ionic handles this internally for
+            // a much nicer keyboard experience.
+            cordova.plugins.Keyboard.disableScroll(true);
+        }
+        if (window.StatusBar) {
+            StatusBar.styleDefault();
+        }
+    });
 });
 
 app.config(function ($stateProvider,$urlRouterProvider) {
-
     // Controlers are specified in the templates, since two-way data binding does not get set up
     // correctly if we specify them here for some reason
     $stateProvider
@@ -54,6 +48,10 @@ app.config(function ($stateProvider,$urlRouterProvider) {
         url: "/posts",
         templateUrl: "feed-posts.html",
     })
+    .state("main.feed.newpost",{
+        url: "/newpost",
+        templateUrl: "newpost.html",
+    })
     .state("main.feed.comments",{
         url: "/comments",
         templateUrl: "feed-comments.html",
@@ -71,14 +69,6 @@ app.config(function ($stateProvider,$urlRouterProvider) {
         views: {
             "content": {
                 templateUrl: "friends.html",
-            }
-        }
-    })
-    .state("main.logout",{
-        url: "/logout",
-        views: {
-            "content": {
-                templateUrl: "logout.html",
             }
         }
     })
@@ -147,29 +137,8 @@ app.controller("SignupCtrl",function($scope) {
 
 });
 
-app.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,$state,api) {
-    // $scope.viewTitle = "Feed";
-    // console.log("feed: viewTitle = "+$scope.viewTitle);
-    // $scope.viewTitle = "Known";
-    // console.log("feed: viewTitle = "+$scope.viewTitle);
-    $scope.viewTitle.value = "Feed";
+app.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,$state,api,$rootScope) {
     $scope.posts = null;
-
-    $scope.buttonPressed = function() {
-        console.log("buttonPressed");
-        $ionicLoading.show({
-            template: "Loading..."
-        }).then(function() {
-            console.log("Loading indicator now displayed");
-
-            $timeout(function() {
-                $ionicLoading.hide().then(function() {
-                    console.log("Loading indicator now hidden");
-                });
-
-            },2000);
-        });
-    };
 
     $scope.doRefresh = function() {
         api.getFeedContents().then(function(posts) {
@@ -180,30 +149,45 @@ app.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,$state,api) {
         }).finally(function() {
             $scope.$broadcast("scroll.refreshComplete");
         });
-    };
+    }
+
+    $scope.likePressed = function(post) {
+        // api.likePost is an asynchronous function, but to avoid a delay in the UI, optimistically
+        // assume that it will succeed, and update the like count
+        post.likes++;
+        api.likePost(post);
+    }
 
     $scope.commentsPressed = function(post) {
         console.log("Comments pressed: "+post.id);
         $state.go("main.feed.comments");
     }
 
+    $rootScope.feedDirty = function() {
+        $scope.doRefresh();
+    }
+
     $scope.doRefresh();
 });
 
 app.controller("CommentsCtrl",function($scope) {
-    // $scope.viewTitle = "Comments";
-    $scope.viewTitle.value = "Comments";
 });
 
-app.controller("ProfileCtrl",function($scope,$ionicLoading,$timeout,api) {
-    $scope.viewTitle.value = "Profile";
+app.controller("ProfileCtrl",function($scope,$ionicLoading,$timeout,api,countries) {
 
     $scope.user = null;
-    $scope.userError = null;
     $scope.notifications = true;
     $scope.test = null;
+    $scope.countries = countries.countries;
+    $scope.countryNamesByCode = countries.countryNamesByCode;
+
+    api.getUser().then(function(user) {
+        $scope.user = user;
+        $scope.userError = "Failed to load";
+    });
 
     $scope.updatePressed = function() {
+        console.log("country = "+$scope.user.country+", gender = "+$scope.user.gender);
         $ionicLoading.show({ template: "Saving changes..." }).then(function() {
             $timeout(function() {
                 $ionicLoading.hide();
@@ -211,57 +195,73 @@ app.controller("ProfileCtrl",function($scope,$ionicLoading,$timeout,api) {
         })
     }
 
-    api.getUser().then(function(user) {
-        $scope.user = user;
-        $scope.userError = "Failed to load";
-    });
+});
+
+app.controller("NewPostCtrl",function($scope,$rootScope,$ionicLoading,$ionicHistory,api) {
+
+    $scope.content = { text: "" };
+
+    $scope.postPressed = function() {
+        console.log("postPressed: content = "+JSON.stringify($scope.content.text));
+        $ionicLoading.show().then(function() {
+            api.newPost(new Date(),$scope.content.text).then(function(post) {
+                $rootScope.feedDirty();
+                $ionicHistory.goBack();
+            }).catch(function(error) {
+                console.log("Error submitting new post: "+error);
+            }).finally(function() {
+                $ionicLoading.hide();
+            });
+        });
+    }
 
 });
 
-app.controller("FriendsCtrl",function($scope,api) {
-    $scope.viewTitle.value = "Friends";
+app.controller("FriendsCtrl",function($scope,api,countries) {
     $scope.friends = null;
+    $scope.countryNamesByCode = countries.countryNamesByCode;
 
     api.getFriends().then(function(friends) {
         $scope.friends = friends;
     });
+
 });
 
-app.controller("LogoutCtrl",function($scope) {
-    $scope.viewTitle.value = "Logout";
-});
+app.controller("MainCtrl",function($scope,$state,$ionicSideMenuDelegate,$ionicPopup,$ionicModal) {
 
-app.controller("MainCtrl",function($scope,$ionicSideMenuDelegate,$state,$timeout) {
-
-    $scope.viewTitle = { value: "Unknown!!!!" };
+    $scope.newPostModal = null;
+    $ionicModal.fromTemplateUrl("newpost.html",{ scope: $scope }).then(function(modal) {
+        console.log("Loaded new post modal");
+        $scope.newPostModal = modal;
+    }).catch(function(error) {
+        console.log("Failed to load new post modal: "+error);
+    });
 
     $scope.toggleMenu = function() {
         $ionicSideMenuDelegate.toggleLeft();
     }
 
     $scope.logoutPressed = function() {
-        $state.go("login");
+        $ionicPopup.show({
+            title: "Log out",
+            template: "Are you sure you want to log out?",
+            buttons: [
+                { text: "Cancel",
+                  type: "button-positive" },
+                { text: "Log out",
+                  type: "button-assertive",
+                  onTap: function() { $state.go("login"); } },
+            ],
+        });
     }
 
-    $scope.composePressed = function() {
-        console.log("Compose pressed");
+    $scope.showNewPost = function() {
+        // $scope.newPostModal.show();
+        $state.go("main.feed.newpost");
+    }
+
+    $scope.hideNewPost = function() {
+        $scope.newPostModal.hide();
     }
 
 });
-
-
-/*
-
-Login
-Sign up
-News feed
-Comments
-Menu
-- News feed
-- Profile
-- Friends
-- Log out
-
-
-
-*/

@@ -1,0 +1,15 @@
+<ion-view view-title="New post" ng-controller="NewPostCtrl">
+    <ion-content>
+        <ion-card>
+            <div class="item">
+                <textarea
+                    placeholder="What's on your mind?"
+                    style="width: 100%; height: 200px"
+                    ng-model="content.text"></textarea>
+            </div>
+            <div class="padding">
+                <button class="button button-block button-positive" on-tap="postPressed()">Post</button>
+            </div>
+        </ion-card>
+    </ion-content>
+</ion-view>

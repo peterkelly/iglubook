@@ -2,40 +2,14 @@
     <ion-side-menu side="left">
         <ion-content class="iglu-sidemenu">
             <ul class="list">
-                <a class="item" ui-sref="main.feed.posts" menu-close>
-                    News feed
-                </a>
-                <a class="item" ui-sref="main.profile" menu-close>
-                    My profile
-                </a>
-                <a class="item" ui-sref="main.friends" menu-close>
-                    Friends
-                </a>
-                <a class="item" ui-sref="login" on-tap="logoutPressed()">
-                    Log out
-                </a>
+                <a class="item" ui-sref="main.feed.posts" menu-close>News feed</a>
+                <a class="item" ui-sref="main.profile" menu-close>My profile</a>
+                <a class="item" ui-sref="main.friends" menu-close>Friends</a>
+                <a class="item" on-tap="logoutPressed()">Log out</a>
             </ul>
         </div>
     </ion-side-menu>
     <ion-side-menu-content>
-        <!--
-        <ion-nav-bar class="bar-stable">
-        </ion-nav-bar>
-    -->
-
-        <!--
-        <ion-header-bar class="bar-stable">
-            <button class="button button-icon" ng-click="toggleMenu()">
-                <i class="icon ion-navicon"></i>
-            </button>
-            <h1 class="title">{{viewTitle.text}}</h1>
-            <button class="button button-icon" on-tap="composePressed()">
-                <i class="icon ion-compose"></i>
-            </button>
-        </ion-header-bar>
-        <ion-nav-view name="content">
-        </ion-nav-view>
-        -->
         <ui-view name="content"></ui-view>
     </ion-side-menu-content>
 </ion-side-menus>

@@ -10,23 +10,29 @@
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">Email</span>
-                    <input type="text" ng-model="user.email">
+                    <input type="text" ng-model="user.email" style="text-align: right">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">First name</span>
-                    <input type="text" ng-model="user.firstName">
+                    <input type="text" ng-model="user.firstName" style="text-align: right">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Last name</span>
-                    <input type="text" ng-model="user.lastName">
+                    <input type="text" ng-model="user.lastName" style="text-align: right">
                 </label>
-                <label class="item item-input">
+                <label class="item item-input item-select">
                     <span class="input-label">Gender</span>
-                    <input type="text" ng-model="user.gender">
+                    <select ng-model="user.gender">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                    </select>
                 </label>
-                <label class="item item-input">
+                <label class="item item-input item-select">
                     <span class="input-label">Country</span>
-                    <input type="text" ng-model="user.country">
+                    <select ng-model="user.country">
+                        <option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</option>
+                    </select>
                 </label>
                 <div class="item item-toggle">
                     Receive push notifications
@@ -36,7 +42,6 @@
                             <div class="handle"></div>
                         </div>
                     </label>
-
                 </div>
             </div>
             <div class="padding">
