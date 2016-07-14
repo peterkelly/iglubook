@@ -6,54 +6,44 @@
 </ion-header-bar>
 <ion-view view-title="Profile" ng-controller="ProfileCtrl">
     <ion-content>
-        <div ng-switch="user">
-            <div ng-switch-when="null">
-                <div class="padding">
-                    <div class="text-center">
-                        <ion-spinner class="ios spinner"></ion-spinner>
-                        <div>Loading</div>
-                    </div>
-                </div>
-            </div>
-            <div ng-switch-default>
-                <div class="list">
-                    <label class="item item-input">
-                        <span class="input-label">Email</span>
-                        <input type="text" ng-model="user.email">
+        <iglu-loadable property="user">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input type="text" ng-model="user.email">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">First name</span>
+                    <input type="text" ng-model="user.firstName">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Last name</span>
+                    <input type="text" ng-model="user.lastName">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Gender</span>
+                    <input type="text" ng-model="user.gender">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Country</span>
+                    <input type="text" ng-model="user.country">
+                </label>
+                <div class="item item-toggle">
+                    Receive push notifications
+                    <label class="toggle">
+                        <input type="checkbox" ng-model="notifications">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
                     </label>
-                    <label class="item item-input">
-                        <span class="input-label">First name</span>
-                        <input type="text" ng-model="user.firstName">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Last name</span>
-                        <input type="text" ng-model="user.lastName">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Gender</span>
-                        <input type="text" ng-model="user.gender">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Country</span>
-                        <input type="text" ng-model="user.country">
-                    </label>
-                    <div class="item item-toggle">
-                        Receive push notifications
-                        <label class="toggle">
-                            <input type="checkbox" ng-model="notifications">
-                            <div class="track">
-                                <div class="handle"></div>
-                            </div>
-                        </label>
 
-                    </div>
-                </div>
-                <div class="padding">
-                    <div class="button button-block button-positive" on-tap="updatePressed()">
-                        Update
-                    </div>
                 </div>
             </div>
-        </div>
+            <div class="padding">
+                <div class="button button-block button-positive" on-tap="updatePressed()">
+                    Update
+                </div>
+            </div>
+        </iglu-loadable>
     </ion-content>
 </ion-view>

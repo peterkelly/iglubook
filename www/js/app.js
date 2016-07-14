@@ -85,6 +85,30 @@ app.config(function ($stateProvider,$urlRouterProvider) {
     $urlRouterProvider.otherwise("/login")
 });
 
+app.directive("igluLoadable",function() {
+    return {
+        restrict: "E",
+        replace: true,
+        transclude: true,
+        template: function(elem,attr) {
+            var property = elem[0].getAttribute("property");
+            return (
+                "<div ng-switch="+JSON.stringify(property)+">"+
+                    "<div ng-switch-when='null'>"+
+                        "<div class='padding'>"+
+                            "<div class='text-center'>"+
+                                "<ion-spinner class='ios spinner'></ion-spinner>"+
+                                "<div>Loading</div>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                    "<div ng-switch-default>"+
+                    "<div ng-transclude>"+
+                "</div>");
+        },
+    }
+})
+
 app.controller("LoginCtrl",function($scope,$state,$timeout,$ionicLoading) {
 
     $scope.email = "";
@@ -128,7 +152,7 @@ app.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,api) {
     // $scope.viewTitle = "Known";
     // console.log("feed: viewTitle = "+$scope.viewTitle);
     $scope.viewTitle.value = "Feed";
-    $scope.posts = [];
+    $scope.posts = null;
 
     $scope.buttonPressed = function() {
         console.log("buttonPressed");
@@ -169,6 +193,7 @@ app.controller("ProfileCtrl",function($scope,$ionicLoading,$timeout,api) {
     $scope.viewTitle.value = "Profile";
 
     $scope.user = null;
+    $scope.userError = null;
     $scope.notifications = true;
     $scope.test = null;
 
@@ -182,6 +207,7 @@ app.controller("ProfileCtrl",function($scope,$ionicLoading,$timeout,api) {
 
     api.getUser().then(function(user) {
         $scope.user = user;
+        $scope.userError = "Failed to load";
     });
 
 });
