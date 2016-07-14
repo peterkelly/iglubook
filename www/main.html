@@ -1,19 +1,21 @@
 <ion-side-menus ng-controller="MainCtrl">
     <ion-side-menu side="left">
-        <ion-list>
-            <ion-item ui-sref="main.feed.posts" menu-close>
-                News feed
-            </ion-item>
-            <ion-item ui-sref="main.profile" menu-close>
-                My profile
-            </ion-item>
-            <ion-item ui-sref="main.friends" menu-close>
-                Friends
-            </ion-item>
-            <ion-item ui-sref="login" on-tap="logoutPressed()">
-                Log out
-            </ion-item>
-        </ion-list>
+        <ion-content class="iglu-sidemenu">
+            <ul class="list">
+                <a class="item" ui-sref="main.feed.posts" menu-close>
+                    News feed
+                </a>
+                <a class="item" ui-sref="main.profile" menu-close>
+                    My profile
+                </a>
+                <a class="item" ui-sref="main.friends" menu-close>
+                    Friends
+                </a>
+                <a class="item" ui-sref="login" on-tap="logoutPressed()">
+                    Log out
+                </a>
+            </ul>
+        </div>
     </ion-side-menu>
     <ion-side-menu-content>
         <!--
