@@ -32,3 +32,10 @@ $sidemenuDividers: #888;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+
+.iglu-login {
+    background-image: url("../img/login-background.jpg");
+    background-position: 25% 50%;
+    background-size: auto 100%;
+    background-color: $calm;
+}
