@@ -215,25 +215,6 @@ interface IAPIPost {
         },
     ];
 
-    // function deepCopy(value: any): any {
-    //     if (typeof(value) !== "object")
-    //         return value;
-    //
-    //     if (value instanceof Array) {
-    //         const result: any[] = [];
-    //         for (var i = 0; i < value.length; i++)
-    //             result.push(deepCopy(value[i]));
-    //         return result;
-    //     }
-    //     else {
-    //         const result: any = {};
-    //         for (var key in value) {
-    //             result[key] = deepCopy(value[key]);
-    //         }
-    //         return result;
-    //     }
-    // }
-
     function copyUser(user: IAPIUser): IAPIUser {
         return {
             id: user.id,
