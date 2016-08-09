@@ -1,19 +1,19 @@
-<ion-view view-title="News Feed" ng-controller="FeedController">
+<ion-view view-title="News Feed" ng-controller="FeedController as feed">
     <ion-nav-buttons side="primary">
-        <button class="button button-icon" ng-click="toggleMenu()">
+        <button class="button button-icon" ng-click="main.toggleMenu()">
             <i class="icon ion-navicon"></i>
         </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-        <button class="button button-icon" on-tap="showNewPost()">
+        <button class="button button-icon" on-tap="main.showNewPost()">
             <i class="icon ion-compose"></i>
         </button>
     </ion-nav-buttons>
     <ion-content>
-        <ion-refresher pulling-text="Pull to retrieve latest posts" on-refresh="doRefresh()"></ion-refresher>
-        <iglu-loadable property="posts">
+        <ion-refresher pulling-text="Pull to retrieve latest feed.posts" on-refresh="feed.doRefresh()"></ion-refresher>
+        <iglu-loadable property="feed.posts">
             <div class="padding">
-                <div ng-repeat="post in posts">
+                <div ng-repeat="post in feed.posts">
                     <div class="card">
                         <div class="item item-avatar">
                             <img src="img/profile-pics/user{{post.posterId}}-thumb.png" width="75" height="75">
@@ -24,10 +24,10 @@
                             {{post.content}}
                         </div>
                         <div class="button-bar">
-                            <div class="button button-clear button-positive" on-tap="likePressed(post)">
+                            <div class="button button-clear button-positive" on-tap="feed.likePressed(post)">
                                 <i class="icon ion-thumbsup"></i> {{post.likes}}
                             </div>
-                            <div class="button button-clear button-energized" on-tap="commentsPressed(post)">
+                            <div class="button button-clear button-energized" on-tap="feed.commentsPressed(post)">
                                 <i class="icon ion-ios-chatboxes"></i> {{post.comments}}
                             </div>
                             <div class="button button-clear button-assertive">

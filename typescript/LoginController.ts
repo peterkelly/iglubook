@@ -9,21 +9,22 @@
     app.controller("LoginController",LoginController);
 
     function LoginController($scope,$state,$timeout,$ionicLoading) {
-        $scope.email = "";
-        $scope.password = "";
+        const self = this;
+        self.email = "";
+        self.password = "";
 
-        $scope.$watch("email",function() {
-            console.log("Email changed: "+JSON.stringify($scope.email));
+        $scope.$watch(() => self.email,function() {
+            console.log("Email changed: "+JSON.stringify(self.email));
         });
 
-        $scope.$watch("password",function() {
-            console.log("Password changed: "+JSON.stringify($scope.password));
+        $scope.$watch(() => self.password,function() {
+            console.log("Password changed: "+JSON.stringify(self.password));
         });
 
-        $scope.loginPressed = function() {
+        self.loginPressed = function() {
             console.log("Log in pressed");
-            console.log("email = "+$scope.email);
-            console.log("password = "+$scope.password);
+            console.log("email = "+self.email);
+            console.log("password = "+self.password);
             // $state.go("main.feed");
             $ionicLoading.show().then(function() {
                 $timeout(function() {
@@ -33,7 +34,7 @@
             });
         };
 
-        $scope.signupPressed = function() {
+        self.signupPressed = function() {
             console.log("Sign up pressed");
             $state.go("signup");
         };

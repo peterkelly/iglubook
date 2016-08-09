@@ -8,7 +8,7 @@
     const app = angular.module("iglubook");
     app.controller("SignupController",SignupController);
 
-    function SignupController($scope) {
+    function SignupController() {
     }
 
 })();

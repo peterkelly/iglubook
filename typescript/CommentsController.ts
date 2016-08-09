@@ -8,7 +8,7 @@
     const app = angular.module("iglubook");
     app.controller("CommentsController",CommentsController);
 
-    function CommentsController($scope) {
+    function CommentsController() {
     }
 
 })();

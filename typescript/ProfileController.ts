@@ -8,20 +8,21 @@
     const app = angular.module("iglubook");
     app.controller("ProfileController",ProfileController);
 
-    function ProfileController($scope,$ionicLoading,$timeout,api,countries) {
-        $scope.user = null;
-        $scope.notifications = true;
-        $scope.test = null;
-        $scope.countries = countries.countries;
-        $scope.countryNamesByCode = countries.countryNamesByCode;
+    function ProfileController($ionicLoading,$timeout,api,countries) {
+        const self = this;
+        self.user = null;
+        self.notifications = true;
+        self.test = null;
+        self.countries = countries.countries;
+        self.countryNamesByCode = countries.countryNamesByCode;
 
         api.getUser().then(function(user) {
-            $scope.user = user;
-            $scope.userError = "Failed to load";
+            self.user = user;
+            self.userError = "Failed to load";
         });
 
-        $scope.updatePressed = function() {
-            console.log("country = "+$scope.user.country+", gender = "+$scope.user.gender);
+        self.updatePressed = function() {
+            console.log("country = "+self.user.country+", gender = "+self.user.gender);
             $ionicLoading.show({ template: "Saving changes..." }).then(function() {
                 $timeout(function() {
                     $ionicLoading.hide();

@@ -1,4 +1,4 @@
-<ion-content ng-controller="LoginController" class="iglu-login">
+<ion-content ng-controller="LoginController as login" class="iglu-login">
     <div class="padding">
         <div class="text-right">
             <img src="img/iglu-white.png" style="height: 100px">
@@ -8,13 +8,13 @@
         </div>
         <div class="card">
             <div class="item item-input">
-                <input type="text" placeholder="Email" ng-model="email">
+                <input type="text" placeholder="Email" ng-model="login.email">
             </div>
             <div class="item item-input">
-                <input type="password" placeholder="Password" ng-model="password">
+                <input type="password" placeholder="Password" ng-model="login.password">
             </div>
         </div>
-        <button class="button button-block button-energized" on-tap="loginPressed()">Log in</button>
+        <button class="button button-block button-energized" on-tap="login.loginPressed()">Log in</button>
         <div class="padding" style="background-color: rgba(255,255,255,0.85); border-radius: 6px">
             <div class="text-center">
                 <p>For testing purposes, any username or password will work.</p>
@@ -25,7 +25,7 @@
         <div>
             Don't have an account yet? Sign up for free!
         </div>
-        <button class="button button-block button-positive" on-tap="signupPressed()">Sign up</button>
+        <button class="button button-block button-positive" on-tap="login.signupPressed()">Sign up</button>
         -->
     </div>
 </ion-content>

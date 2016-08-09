@@ -8,37 +8,38 @@
     const app = angular.module("iglubook");
     app.controller("FeedController",FeedController);
 
-    function FeedController($scope,$ionicLoading,$timeout,$state,api,$rootScope) {
-        $scope.posts = null;
+    function FeedController($ionicLoading,$timeout,$state,api,$rootScope) {
+        const self = this;
+        self.posts = null;
 
-        $scope.doRefresh = function() {
+        self.doRefresh = function() {
             api.getFeedContents().then(function(posts) {
                 console.log("getFeedContents: success");
-                $scope.posts = posts;
+                self.posts = posts;
             }).catch(function(error) {
                 console.log("getFeedContents: failure: "+error);
             }).finally(function() {
-                $scope.$broadcast("scroll.refreshComplete");
+                self.$broadcast("scroll.refreshComplete");
             });
         }
 
-        $scope.likePressed = function(post) {
+        self.likePressed = function(post) {
             // api.likePost is an asynchronous function, but to avoid a delay in the UI, optimistically
             // assume that it will succeed, and update the like count
             post.likes++;
             api.likePost(post);
         }
 
-        $scope.commentsPressed = function(post) {
+        self.commentsPressed = function(post) {
             console.log("Comments pressed: "+post.id);
             $state.go("main.feed.comments");
         }
 
         $rootScope.feedDirty = function() {
-            $scope.doRefresh();
+            self.doRefresh();
         }
 
-        $scope.doRefresh();
+        self.doRefresh();
     }
 
 })();

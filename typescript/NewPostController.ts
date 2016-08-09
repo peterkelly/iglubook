@@ -8,13 +8,14 @@
     const app = angular.module("iglubook");
     app.controller("NewPostController",NewPostController);
 
-    function NewPostController($scope,$rootScope,$ionicLoading,$ionicHistory,api) {
-        $scope.content = { text: "" };
+    function NewPostController($rootScope,$ionicLoading,$ionicHistory,api) {
+        const self = this;
+        self.content = { text: "" };
 
-        $scope.postPressed = function() {
-            console.log("postPressed: content = "+JSON.stringify($scope.content.text));
+        self.postPressed = function() {
+            console.log("postPressed: content = "+JSON.stringify(self.content.text));
             $ionicLoading.show().then(function() {
-                api.newPost(new Date(),$scope.content.text).then(function(post) {
+                api.newPost(new Date(),self.content.text).then(function(post) {
                     $rootScope.feedDirty();
                     $ionicHistory.goBack();
                 }).catch(function(error) {

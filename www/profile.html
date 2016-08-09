@@ -1,28 +1,28 @@
 <ion-header-bar class="bar-calm">
-    <button class="button button-icon" ng-click="toggleMenu()">
+    <button class="button button-icon" ng-click="main.toggleMenu()">
         <i class="icon ion-navicon"></i>
     </button>
     <h1 class="title">My Profile</h1>
 </ion-header-bar>
-<ion-view view-title="Profile" ng-controller="ProfileController">
+<ion-view view-title="Profile" ng-controller="ProfileController as profile">
     <ion-content>
-        <iglu-loadable property="user">
+        <iglu-loadable property="profile.user">
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">Email</span>
-                    <input type="text" ng-model="user.email" style="text-align: right">
+                    <input type="text" ng-model="profile.user.email" style="text-align: right">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">First name</span>
-                    <input type="text" ng-model="user.firstName" style="text-align: right">
+                    <input type="text" ng-model="profile.user.firstName" style="text-align: right">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Last name</span>
-                    <input type="text" ng-model="user.lastName" style="text-align: right">
+                    <input type="text" ng-model="profile.user.lastName" style="text-align: right">
                 </label>
                 <label class="item item-input item-select">
                     <span class="input-label">Gender</span>
-                    <select ng-model="user.gender">
+                    <select ng-model="profile.user.gender">
                         <option value="M">Male</option>
                         <option value="F">Female</option>
                         <option value="O">Other</option>
@@ -30,14 +30,14 @@
                 </label>
                 <label class="item item-input item-select">
                     <span class="input-label">Country</span>
-                    <select ng-model="user.country">
-                        <option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</option>
+                    <select ng-model="profile.user.country">
+                        <option ng-repeat="country in profile.countries" value="{{country.code}}">{{country.name}}</option>
                     </select>
                 </label>
                 <div class="item item-toggle">
                     Receive push notifications
                     <label class="toggle">
-                        <input type="checkbox" ng-model="notifications">
+                        <input type="checkbox" ng-model="profile.notifications">
                         <div class="track">
                             <div class="handle"></div>
                         </div>
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="padding">
-                <div class="button button-block button-positive" on-tap="updatePressed()">
+                <div class="button button-block button-positive" on-tap="profile.updatePressed()">
                     Update
                 </div>
             </div>

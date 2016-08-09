@@ -1,17 +1,17 @@
 <ion-header-bar class="bar-calm">
-    <button class="button button-icon" ng-click="toggleMenu()">
+    <button class="button button-icon" ng-click="main.toggleMenu()">
         <i class="icon ion-navicon"></i>
     </button>
     <h1 class="title">Friends</h1>
 </ion-header-bar>
-<ion-view view-title="Friends" ng-controller="FriendsController">
+<ion-view view-title="Friends" ng-controller="FriendsController as friends">
     <ion-content>
-        <iglu-loadable property="friends">
+        <iglu-loadable property="friends.friends">
             <ion-list>
-                <div class="item item-avatar" ng-repeat="friend in friends">
+                <div class="item item-avatar" ng-repeat="friend in friends.friends">
                     <img src="img/profile-pics/user{{friend.id}}-thumb.png" width="75" height="75">
                     <h2>{{friend.firstName}} {{friend.lastName}}</h2>
-                    <p>{{friend.gender == "M" ? "Male" : "Female"}}, {{countryNamesByCode[friend.country]}}</p>
+                    <p>{{friend.gender == "M" ? "Male" : "Female"}}, {{friends.countryNamesByCode[friend.country]}}</p>
                 </div>
             </ion-list>
         </iglu-loadable>
