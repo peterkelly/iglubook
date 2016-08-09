@@ -8,7 +8,12 @@
     const app = angular.module("iglubook");
     app.controller("LoginController",LoginController);
 
-    function LoginController($scope,$state,$timeout,$ionicLoading) {
+    function LoginController(
+        $scope: angular.IScope,
+        $state: angular.ui.IStateService,
+        $timeout: angular.ITimeoutService,
+        $ionicLoading: fixes.IonicLoadingService) {
+
         const self = this;
 
         self.email = "";

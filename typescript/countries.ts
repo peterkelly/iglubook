@@ -3,6 +3,11 @@
 /// <reference path="../node_modules/@types/cordova/index.d.ts" />
 /// <reference path="../node_modules/@types/ionic/index.d.ts" />
 
+type ICountries = {
+    countries: { code: string, name: string }[];
+    countryNamesByCode: { [code: string]: string };
+}
+
 (function() {
 
     const app = angular.module("iglubook");

@@ -8,12 +8,13 @@
     const app = angular.module("iglubook");
     app.directive("igluLoadable",IgluLoadable)
 
-    function IgluLoadable() {
+    function IgluLoadable(): angular.IDirective {
         return {
             restrict: "E",
             replace: true,
             transclude: true,
-            template: function(elem,attr) {
+            // FIXME: Not sure what the types of elem and attr are supposed to be here
+            template: function(elem: any, attr: any) {
                 var property = elem[0].getAttribute("property");
                 return (
                     "<div ng-switch="+JSON.stringify(property)+">"+

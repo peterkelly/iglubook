@@ -3,11 +3,41 @@
 /// <reference path="../node_modules/@types/cordova/index.d.ts" />
 /// <reference path="../node_modules/@types/ionic/index.d.ts" />
 
+type IPromise<T> = angular.IPromise<T>;
+
+interface IAPIService {
+    getFeedContents(): IPromise<IAPIPost[]>;
+    getFriends(): IPromise<IAPIUser[]>;
+    getUser(): IPromise<IAPIUser>;
+    newPost(date: Date, content: string): IPromise<IAPIPost>;
+    likePost(post: IAPIPost): IPromise<IAPIPost>;
+}
+
+interface IAPIUser {
+    id: number,
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    gender: string,
+    country: string,
+}
+
+interface IAPIPost {
+    id: number,
+    posterId: number,
+    posterFullName: string,
+    date: string,
+    content: string,
+    likes: number,
+    comments: number,
+}
+
 (function() {
 
-    var fakeTimeout = 1000;
+    const fakeTimeout = 1000;
 
-    var sampleUsers = [
+    const sampleUsers: IAPIUser[] = [
         {
             id: 1,
             email: "demo@iglu.inet",
@@ -91,7 +121,7 @@
         },
     ];
 
-    var samplePosts = [
+    const samplePosts: IAPIPost[] = [
         {
             id: 1,
             posterId: 2,
@@ -185,64 +215,100 @@
         },
     ];
 
-    function deepCopy(value) {
-        if (typeof(value) !== "object")
-            return value;
+    // function deepCopy(value: any): any {
+    //     if (typeof(value) !== "object")
+    //         return value;
+    //
+    //     if (value instanceof Array) {
+    //         const result: any[] = [];
+    //         for (var i = 0; i < value.length; i++)
+    //             result.push(deepCopy(value[i]));
+    //         return result;
+    //     }
+    //     else {
+    //         const result: any = {};
+    //         for (var key in value) {
+    //             result[key] = deepCopy(value[key]);
+    //         }
+    //         return result;
+    //     }
+    // }
 
-        if (value instanceof Array) {
-            const result: any[] = [];
-            for (var i = 0; i < value.length; i++)
-                result.push(deepCopy(value[i]));
-            return result;
+    function copyUser(user: IAPIUser): IAPIUser {
+        return {
+            id: user.id,
+            email: user.email,
+            password: user.password,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            gender: user.gender,
+            country: user.country,
         }
-        else {
-            const result: any = {};
-            for (var key in value) {
-                result[key] = deepCopy(value[key]);
-            }
-            return result;
+    }
+
+    function copyPost(post: IAPIPost): IAPIPost {
+        return {
+            id: post.id,
+            posterId: post.posterId,
+            posterFullName: post.posterFullName,
+            date: post.date,
+            content: post.content,
+            likes: post.likes,
+            comments: post.comments,
         }
+    }
+
+    function copyArray<T>(array: T[], copyFun: (obj: T) => T): T[] {
+        const result: T[] = [];
+        for (const element of array)
+            result.push(copyFun(element));
+        return result;
     }
 
     const app = angular.module("iglubook");
     app.service("APIService",APIService);
 
-    function APIService($timeout,$q,$http) {
+    function APIService(
+        $timeout: angular.ITimeoutService,
+        $q: angular.IQService,
+        $http: angular.IHttpService) {
+
         var nextPostId = 10;
 
-        return {
+        const service: IAPIService = {
             getFeedContents: getFeedContents,
             getFriends: getFriends,
             getUser: getUser,
             newPost: newPost,
             likePost: likePost,
-        }
+        };
+        return service;
 
-        function getFeedContents() {
-            return $q(function(resolve,reject) {
+        function getFeedContents(): IPromise<IAPIPost[]> {
+            return $q<IAPIPost[]>(function(resolve,reject) {
                 $timeout(function() {
-                    resolve(deepCopy(samplePosts));
+                    resolve(copyArray(samplePosts,copyPost));
                 },fakeTimeout);
             });
         }
 
-        function getFriends() {
-            return $q(function(resolve,reject) {
+        function getFriends(): IPromise<IAPIUser[]> {
+            return $q<IAPIUser[]>(function(resolve,reject) {
                 $timeout(function() {
-                    resolve(deepCopy(sampleUsers));
+                    resolve(copyArray(sampleUsers,copyUser));
                 },fakeTimeout);
             });
         }
 
-        function getUser() {
-            return $q(function(resolve,reject) {
-                $timeout(function() {
-                    resolve(deepCopy(sampleUsers[0]));
+        function getUser(): IPromise<IAPIUser> {
+            return $q<IAPIUser>(function(resolve,reject): void {
+                $timeout(function(): void {
+                    resolve(copyUser(sampleUsers[0]));
                 },fakeTimeout);
             });
         }
 
-        function newPost(date,content) {
+        function newPost(date: Date, content: string): IPromise<IAPIPost> {
             var postId = nextPostId++;
             var post = {
                 id: postId,
@@ -255,21 +321,21 @@
             };
             samplePosts.splice(0,0,post);
 
-            return $q(function(resolve,reject) {
+            return $q<IAPIPost>(function(resolve,reject) {
                 $timeout(function() {
-                    resolve(deepCopy(post));
+                    resolve(copyPost(post));
                 },fakeTimeout);
             });
         }
 
-        function likePost(post) {
-            return $q(function(resolve,reject) {
+        function likePost(post: IAPIPost): IPromise<IAPIPost> {
+            return $q<IAPIPost>(function(resolve,reject) {
                 $timeout(function() {
-                    var resultPost = null;
+                    var resultPost: IAPIPost = null;
                     for (var i = 0; i < samplePosts.length; i++) {
                         if (samplePosts[i].id == post.id) {
                             samplePosts[i].likes++;
-                            resultPost = deepCopy(samplePosts[i]);
+                            resultPost = copyPost(samplePosts[i]);
                         }
                     }
                     resolve(resultPost);

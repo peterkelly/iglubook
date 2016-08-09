@@ -7,7 +7,7 @@
 
     const app = angular.module("iglubook",["ionic"]);
 
-    app.run(function($ionicPlatform) {
+    app.run(function($ionicPlatform: ionic.platform.IonicPlatformService) {
         $ionicPlatform.ready(function() {
             if (window.cordova !== undefined) {
                 // FIXME: need type definition for ionic keyboard plugin
@@ -31,7 +31,10 @@
         });
     });
 
-    app.config(function ($stateProvider,$urlRouterProvider) {
+    app.config(function(
+        $stateProvider: angular.ui.IStateProvider,
+        $urlRouterProvider: angular.ui.IUrlRouterProvider) {
+
         // Controlers are specified in the templates, since two-way data binding does not get set up
         // correctly if we specify them here for some reason
         $stateProvider

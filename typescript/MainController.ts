@@ -8,7 +8,13 @@
     const app = angular.module("iglubook");
     app.controller("MainController",MainController);
 
-    function MainController($scope,$state,$ionicSideMenuDelegate,$ionicPopup,$ionicModal) {
+    function MainController(
+        $scope: angular.IScope,
+        $state: angular.ui.IStateService,
+        $ionicSideMenuDelegate: ionic.sideMenu.IonicSideMenuDelegate,
+        $ionicPopup: ionic.popup.IonicPopupService,
+        $ionicModal: ionic.modal.IonicModalService) {
+
         const self = this;
 
         self.newPostModal = null;

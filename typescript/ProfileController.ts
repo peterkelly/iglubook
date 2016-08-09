@@ -8,7 +8,12 @@
     const app = angular.module("iglubook");
     app.controller("ProfileController",ProfileController);
 
-    function ProfileController($ionicLoading,$timeout,APIService,countries) {
+    function ProfileController(
+        $ionicLoading: fixes.IonicLoadingService,
+        $timeout: angular.ITimeoutService,
+        APIService: IAPIService,
+        countries: ICountries) {
+
         const self = this;
 
         self.user = null;

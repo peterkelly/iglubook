@@ -8,7 +8,13 @@
     const app = angular.module("iglubook");
     app.controller("NewPostController",NewPostController);
 
-    function NewPostController($rootScope,$ionicLoading,$ionicHistory,APIService) {
+    function NewPostController(
+        $rootScope: angular.IRootScopeService,
+        $ionicLoading: fixes.IonicLoadingService,
+        $ionicHistory: ionic.navigation.IonicHistoryService,
+        $timeout: angular.ITimeoutService,
+        APIService: IAPIService) {
+
         const self = this;
 
         self.content = { text: "" };
@@ -18,7 +24,8 @@
             console.log("postPressed: content = "+JSON.stringify(self.content.text));
             $ionicLoading.show().then(function() {
                 APIService.newPost(new Date(),self.content.text).then(function(post) {
-                    $rootScope.feedDirty();
+                    // FIXME: This isn't a clean way to do it; broadcast an event instead
+                    (<any>$rootScope).feedDirty();
                     $ionicHistory.goBack();
                 }).catch(function(error) {
                     console.log("Error submitting new post: "+error);

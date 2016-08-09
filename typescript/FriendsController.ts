@@ -8,7 +8,10 @@
     const app = angular.module("iglubook");
     app.controller("FriendsController",FriendsController);
 
-    function FriendsController(APIService,countries) {
+    function FriendsController(
+        APIService: IAPIService,
+        countries: ICountries) {
+
         const self = this;
 
         self.friends = null;
