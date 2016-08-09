@@ -111,7 +111,7 @@ app.directive("igluLoadable",function() {
     }
 })
 
-app.controller("LoginCtrl",function($scope,$state,$timeout,$ionicLoading) {
+app.controller("LoginController",function($scope,$state,$timeout,$ionicLoading) {
 
     $scope.email = "";
     $scope.password = "";
@@ -144,11 +144,11 @@ app.controller("LoginCtrl",function($scope,$state,$timeout,$ionicLoading) {
 
 });
 
-app.controller("SignupCtrl",function($scope) {
+app.controller("SignupController",function($scope) {
 
 });
 
-app.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,$state,api,$rootScope) {
+app.controller("FeedController",function($scope,$ionicLoading,$timeout,$state,api,$rootScope) {
     $scope.posts = null;
 
     $scope.doRefresh = function() {
@@ -181,10 +181,10 @@ app.controller("FeedCtrl",function($scope,$ionicLoading,$timeout,$state,api,$roo
     $scope.doRefresh();
 });
 
-app.controller("CommentsCtrl",function($scope) {
+app.controller("CommentsController",function($scope) {
 });
 
-app.controller("ProfileCtrl",function($scope,$ionicLoading,$timeout,api,countries) {
+app.controller("ProfileController",function($scope,$ionicLoading,$timeout,api,countries) {
 
     $scope.user = null;
     $scope.notifications = true;
@@ -208,7 +208,7 @@ app.controller("ProfileCtrl",function($scope,$ionicLoading,$timeout,api,countrie
 
 });
 
-app.controller("NewPostCtrl",function($scope,$rootScope,$ionicLoading,$ionicHistory,api) {
+app.controller("NewPostController",function($scope,$rootScope,$ionicLoading,$ionicHistory,api) {
 
     $scope.content = { text: "" };
 
@@ -228,7 +228,7 @@ app.controller("NewPostCtrl",function($scope,$rootScope,$ionicLoading,$ionicHist
 
 });
 
-app.controller("FriendsCtrl",function($scope,api,countries) {
+app.controller("FriendsController",function($scope,api,countries) {
     $scope.friends = null;
     $scope.countryNamesByCode = countries.countryNamesByCode;
 
@@ -238,7 +238,7 @@ app.controller("FriendsCtrl",function($scope,api,countries) {
 
 });
 
-app.controller("MainCtrl",function($scope,$state,$ionicSideMenuDelegate,$ionicPopup,$ionicModal) {
+app.controller("MainController",function($scope,$state,$ionicSideMenuDelegate,$ionicPopup,$ionicModal) {
 
     $scope.newPostModal = null;
     $ionicModal.fromTemplateUrl("newpost.html",{ scope: $scope }).then(function(modal) {
