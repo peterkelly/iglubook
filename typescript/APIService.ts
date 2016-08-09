@@ -205,9 +205,9 @@
     }
 
     const app = angular.module("iglubook");
-    app.service("api",api);
+    app.service("APIService",APIService);
 
-    function api($timeout,$q,$http) {
+    function APIService($timeout,$q,$http) {
         var nextPostId = 10;
 
         return {

@@ -8,7 +8,7 @@
     const app = angular.module("iglubook");
     app.controller("ProfileController",ProfileController);
 
-    function ProfileController($ionicLoading,$timeout,api,countries) {
+    function ProfileController($ionicLoading,$timeout,APIService,countries) {
         const self = this;
 
         self.user = null;
@@ -18,7 +18,7 @@
         self.countryNamesByCode = countries.countryNamesByCode;
         self.updatePressed = updatePressed;
 
-        api.getUser().then(function(user) {
+        APIService.getUser().then(function(user) {
             self.user = user;
             self.userError = "Failed to load";
         });

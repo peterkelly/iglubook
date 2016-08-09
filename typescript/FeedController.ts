@@ -8,7 +8,7 @@
     const app = angular.module("iglubook");
     app.controller("FeedController",FeedController);
 
-    function FeedController($ionicLoading,$timeout,$state,api,$rootScope) {
+    function FeedController($ionicLoading,$timeout,$state,APIService,$rootScope) {
         const self = this;
 
         self.posts = null;
@@ -21,7 +21,7 @@
         self.doRefresh();
 
         function doRefresh() {
-            api.getFeedContents().then(function(posts) {
+            APIService.getFeedContents().then(function(posts) {
                 console.log("getFeedContents: success");
                 self.posts = posts;
             }).catch(function(error) {
@@ -32,10 +32,10 @@
         }
 
         function likePressed(post) {
-            // api.likePost is an asynchronous function, but to avoid a delay in the UI, optimistically
+            // APIService.likePost is an asynchronous function, but to avoid a delay in the UI, optimistically
             // assume that it will succeed, and update the like count
             post.likes++;
-            api.likePost(post);
+            APIService.likePost(post);
         }
 
         function commentsPressed(post) {
