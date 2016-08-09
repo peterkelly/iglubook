@@ -183,13 +183,13 @@ function deepCopy(value) {
         return value;
 
     if (value instanceof Array) {
-        var result = [];
+        const result: any[] = [];
         for (var i = 0; i < value.length; i++)
             result.push(deepCopy(value[i]));
         return result;
     }
     else {
-        var result = {};
+        const result: any = {};
         for (var key in value) {
             result[key] = deepCopy(value[key]);
         }

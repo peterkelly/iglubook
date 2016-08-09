@@ -10,3 +10,4 @@ backend/typings/
 backend/iglubook.sqlite3
 www/css/ionic.app.css
 www/css/ionic.app.min.css
+www/js
