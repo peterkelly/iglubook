@@ -5,54 +5,51 @@
 
 (function() {
 
-    const app = angular.module("iglubook");
-    app.controller("FeedController",FeedController);
+    class FeedController {
+        private posts: IAPIPost[] = null;
 
-    function FeedController(
-        $ionicLoading: ionic.loading.IonicLoadingService,
-        $timeout: angular.ITimeoutService,
-        $state: angular.ui.IStateService,
-        APIService: IAPIService,
-        $rootScope: angular.IRootScopeService) {
+        public constructor(
+            private $scope: angular.IScope,
+            private $ionicLoading: ionic.loading.IonicLoadingService,
+            private $timeout: angular.ITimeoutService,
+            private $state: angular.ui.IStateService,
+            private APIService: IAPIService,
+            private $rootScope: angular.IRootScopeService) {
 
-        const self = this;
+            // FIXME: This isn't a clean way to do it; broadcast an event instead
+            (<any>$rootScope).feedDirty = () => this.feedDirty();
+            this.doRefresh();
+        }
 
-        self.posts = null;
-        self.doRefresh = doRefresh;
-        self.likePressed = likePressed;
-        self.commentsPressed = commentsPressed;
-
-        // FIXME: This isn't a clean way to do it; broadcast an event instead
-        (<any>$rootScope).feedDirty = feedDirty;
-
-        self.doRefresh();
-
-        function doRefresh() {
-            APIService.getFeedContents().then((posts) => {
+        public doRefresh() {
+            this.APIService.getFeedContents().then((posts) => {
                 console.log("getFeedContents: success");
-                self.posts = posts;
+                this.posts = posts;
             }).catch((error) => {
                 console.log("getFeedContents: failure: "+error);
             }).finally(() => {
-                self.$broadcast("scroll.refreshComplete");
+                this.$scope.$broadcast("scroll.refreshComplete");
             });
         }
 
-        function likePressed(post: IAPIPost) {
+        public likePressed(post: IAPIPost) {
             // APIService.likePost is an asynchronous function, but to avoid a delay in the UI, optimistically
             // assume that it will succeed, and update the like count
             post.likes++;
-            APIService.likePost(post);
+            this.APIService.likePost(post);
         }
 
-        function commentsPressed(post: IAPIPost) {
+        public commentsPressed(post: IAPIPost) {
             console.log("Comments pressed: "+post.id);
-            $state.go("main.feed.comments");
+            this.$state.go("main.feed.comments");
         }
 
-        function feedDirty() {
-            self.doRefresh();
+        public feedDirty() {
+            this.doRefresh();
         }
     }
+
+    const app = angular.module("iglubook");
+    app.controller("FeedController",FeedController);
 
 })();

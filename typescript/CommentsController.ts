@@ -5,10 +5,12 @@
 
 (function() {
 
+    class CommentsController {
+        public constructor() {
+        }
+    }
+
     const app = angular.module("iglubook");
     app.controller("CommentsController",CommentsController);
-
-    function CommentsController() {
-    }
 
 })();

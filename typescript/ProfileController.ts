@@ -5,35 +5,37 @@
 
 (function() {
 
-    const app = angular.module("iglubook");
-    app.controller("ProfileController",ProfileController);
+    class ProfileController {
+        public user: IAPIUser = null;
+        public userError: string = null;
+        public notifications: boolean = true;
+        public countryList: { code: string, name: string }[];
+        public countryNamesByCode: { [code: string]: string };
 
-    function ProfileController(
-        $ionicLoading: fixes.IonicLoadingService,
-        $timeout: angular.ITimeoutService,
-        APIService: IAPIService,
-        countries: ICountries) {
+        public constructor(
+            private $ionicLoading: fixes.IonicLoadingService,
+            private $timeout: angular.ITimeoutService,
+            private APIService: IAPIService,
+            private countries: ICountries) {
 
-        const self = this;
+            this.countryList = countries.countries;
+            this.countryNamesByCode = countries.countryNamesByCode;
 
-        self.user = null;
-        self.notifications = true;
-        self.test = null;
-        self.countries = countries.countries;
-        self.countryNamesByCode = countries.countryNamesByCode;
-        self.updatePressed = updatePressed;
+            APIService.getUser().then((user) => {
+                this.user = user;
+                this.userError = "Failed to load";
+            });
+        }
 
-        APIService.getUser().then((user) => {
-            self.user = user;
-            self.userError = "Failed to load";
-        });
-
-        function updatePressed() {
-            console.log("country = "+self.user.country+", gender = "+self.user.gender);
-            $ionicLoading.show({ template: "Saving changes..." }).then(() => {
-                $timeout(() => $ionicLoading.hide(),1000);
+        public updatePressed() {
+            console.log("country = "+this.user.country+", gender = "+this.user.gender);
+            this.$ionicLoading.show({ template: "Saving changes..." }).then(() => {
+                this.$timeout(() => this.$ionicLoading.hide(),1000);
             })
         }
     }
+
+    const app = angular.module("iglubook");
+    app.controller("ProfileController",ProfileController);
 
 })();

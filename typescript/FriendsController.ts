@@ -5,21 +5,23 @@
 
 (function() {
 
+    class FriendsController {
+        private friends: IAPIUser[] = null;
+        private countryNamesByCode: { [code: string]: string };
+
+        public constructor(
+            private APIService: IAPIService,
+            private countries: ICountries) {
+
+            this.countryNamesByCode = countries.countryNamesByCode;
+
+            APIService.getFriends().then((friends) => {
+                this.friends = friends;
+            });
+        }
+    }
+
     const app = angular.module("iglubook");
     app.controller("FriendsController",FriendsController);
-
-    function FriendsController(
-        APIService: IAPIService,
-        countries: ICountries) {
-
-        const self = this;
-
-        self.friends = null;
-        self.countryNamesByCode = countries.countryNamesByCode;
-
-        APIService.getFriends().then((friends) => {
-            self.friends = friends;
-        });
-    }
 
 })();

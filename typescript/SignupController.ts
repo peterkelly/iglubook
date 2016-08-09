@@ -5,10 +5,12 @@
 
 (function() {
 
+    class SignupController {
+        public constructor() {
+        }
+    }
+
     const app = angular.module("iglubook");
     app.controller("SignupController",SignupController);
-
-    function SignupController() {
-    }
 
 })();

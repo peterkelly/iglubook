@@ -246,45 +246,35 @@ interface IAPIPost {
         return result;
     }
 
-    const app = angular.module("iglubook");
-    app.service("APIService",APIService);
+    class APIService implements IAPIService {
+        private nextPostId: number = 10;
 
-    function APIService(
-        $timeout: angular.ITimeoutService,
-        $q: angular.IQService,
-        $http: angular.IHttpService) {
+        public constructor(
+            private $timeout: angular.ITimeoutService,
+            private $q: angular.IQService,
+            private $http: angular.IHttpService) {
+        }
 
-        var nextPostId = 10;
-
-        const service: IAPIService = {
-            getFeedContents: getFeedContents,
-            getFriends: getFriends,
-            getUser: getUser,
-            newPost: newPost,
-            likePost: likePost,
-        };
-        return service;
-
-        function getFeedContents(): IPromise<IAPIPost[]> {
-            return $q<IAPIPost[]>((resolve,reject) => {
-                $timeout(() => resolve(copyArray(samplePosts,copyPost)),fakeTimeout);
+        public getFeedContents(): IPromise<IAPIPost[]> {
+            return this.$q<IAPIPost[]>((resolve,reject) => {
+                this.$timeout(() => resolve(copyArray(samplePosts,copyPost)),fakeTimeout);
             });
         }
 
-        function getFriends(): IPromise<IAPIUser[]> {
-            return $q<IAPIUser[]>((resolve,reject) => {
-                $timeout(() => resolve(copyArray(sampleUsers,copyUser)),fakeTimeout);
+        public getFriends(): IPromise<IAPIUser[]> {
+            return this.$q<IAPIUser[]>((resolve,reject) => {
+                this.$timeout(() => resolve(copyArray(sampleUsers,copyUser)),fakeTimeout);
             });
         }
 
-        function getUser(): IPromise<IAPIUser> {
-            return $q<IAPIUser>((resolve,reject) => {
-                $timeout(() => resolve(copyUser(sampleUsers[0])),fakeTimeout);
+        public getUser(): IPromise<IAPIUser> {
+            return this.$q<IAPIUser>((resolve,reject) => {
+                this.$timeout(() => resolve(copyUser(sampleUsers[0])),fakeTimeout);
             });
         }
 
-        function newPost(date: Date, content: string): IPromise<IAPIPost> {
-            var postId = nextPostId++;
+        public newPost(date: Date, content: string): IPromise<IAPIPost> {
+            var postId = this.nextPostId++;
             var post = {
                 id: postId,
                 posterId: sampleUsers[0].id,
@@ -296,14 +286,14 @@ interface IAPIPost {
             };
             samplePosts.splice(0,0,post);
 
-            return $q<IAPIPost>((resolve,reject) => {
-                $timeout(() => resolve(copyPost(post)),fakeTimeout);
+            return this.$q<IAPIPost>((resolve,reject) => {
+                this.$timeout(() => resolve(copyPost(post)),fakeTimeout);
             });
         }
 
-        function likePost(post: IAPIPost): IPromise<IAPIPost> {
-            return $q<IAPIPost>((resolve,reject) => {
-                $timeout(() => {
+        public likePost(post: IAPIPost): IPromise<IAPIPost> {
+            return this.$q<IAPIPost>((resolve,reject) => {
+                this.$timeout(() => {
                     var resultPost: IAPIPost = null;
                     for (var i = 0; i < samplePosts.length; i++) {
                         if (samplePosts[i].id == post.id) {
@@ -316,5 +306,8 @@ interface IAPIPost {
             });
         }
     }
+
+    const app = angular.module("iglubook");
+    app.service("APIService",APIService);
 
 })();

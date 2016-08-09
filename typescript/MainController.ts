@@ -5,37 +5,30 @@
 
 (function() {
 
-    const app = angular.module("iglubook");
-    app.controller("MainController",MainController);
+    class MainController {
+        private newPostModal: ionic.modal.IonicModalController;
 
-    function MainController(
-        $scope: angular.IScope,
-        $state: angular.ui.IStateService,
-        $ionicSideMenuDelegate: ionic.sideMenu.IonicSideMenuDelegate,
-        $ionicPopup: ionic.popup.IonicPopupService,
-        $ionicModal: ionic.modal.IonicModalService) {
+        public constructor(
+            private $scope: angular.IScope,
+            private $state: angular.ui.IStateService,
+            private $ionicSideMenuDelegate: ionic.sideMenu.IonicSideMenuDelegate,
+            private $ionicPopup: ionic.popup.IonicPopupService,
+            private $ionicModal: ionic.modal.IonicModalService) {
 
-        const self = this;
-
-        self.newPostModal = null;
-        self.toggleMenu = toggleMenu;
-        self.logoutPressed = logoutPressed;
-        self.showNewPost = showNewPost;
-        self.hideNewPost = hideNewPost;
-
-        $ionicModal.fromTemplateUrl("newpost.html",{ scope: $scope }).then((modal) => {
-            console.log("Loaded new post modal");
-            self.newPostModal = modal;
-        }).catch((error) => {
-            console.log("Failed to load new post modal: "+error);
-        });
-
-        function toggleMenu() {
-            $ionicSideMenuDelegate.toggleLeft();
+            $ionicModal.fromTemplateUrl("newpost.html",{ scope: $scope }).then((modal) => {
+                console.log("Loaded new post modal");
+                this.newPostModal = modal;
+            }).catch((error) => {
+                console.log("Failed to load new post modal: "+error);
+            });
         }
 
-        function logoutPressed() {
-            $ionicPopup.show({
+        public toggleMenu() {
+            this.$ionicSideMenuDelegate.toggleLeft();
+        }
+
+        public logoutPressed() {
+            this.$ionicPopup.show({
                 title: "Log out",
                 template: "Are you sure you want to log out?",
                 buttons: [
@@ -43,19 +36,22 @@
                       type: "button-positive" },
                     { text: "Log out",
                       type: "button-assertive",
-                      onTap: () => $state.go("login") },
+                      onTap: () => this.$state.go("login") },
                 ],
             });
         }
 
-        function showNewPost() {
-            // self.newPostModal.show();
-            $state.go("main.feed.newpost");
+        public showNewPost() {
+            // this.newPostModal.show();
+            this.$state.go("main.feed.newpost");
         }
 
-        function hideNewPost() {
-            self.newPostModal.hide();
+        public hideNewPost() {
+            this.newPostModal.hide();
         }
     }
+
+    const app = angular.module("iglubook");
+    app.controller("MainController",MainController);
 
 })();

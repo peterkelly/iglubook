@@ -5,51 +5,49 @@
 
 (function() {
 
-    const app = angular.module("iglubook");
-    app.controller("LoginController",LoginController);
+    class LoginController {
+        public email: string = "";
+        public password: string = "";
+        public constructor(
+            private $scope: angular.IScope,
+            private $state: angular.ui.IStateService,
+            private $timeout: angular.ITimeoutService,
+            private $ionicLoading: fixes.IonicLoadingService) {
 
-    function LoginController(
-        $scope: angular.IScope,
-        $state: angular.ui.IStateService,
-        $timeout: angular.ITimeoutService,
-        $ionicLoading: fixes.IonicLoadingService) {
+            $scope.$watch(() => this.email,() => this.emailChanged());
+            $scope.$watch(() => this.password,() => this.passwordChanged());
+        }
 
-        const self = this;
 
-        self.email = "";
-        self.password = "";
-        self.loginPressed = loginPressed;
-        self.signupPressed = signupPressed;
-
-        $scope.$watch(() => self.email,emailChanged);
-        $scope.$watch(() => self.password,passwordChanged);
-
-        function loginPressed() {
+        public loginPressed() {
             console.log("Log in pressed");
-            console.log("email = "+self.email);
-            console.log("password = "+self.password);
+            console.log("email = "+this.email);
+            console.log("password = "+this.password);
             // $state.go("main.feed");
-            $ionicLoading.show().then(() => {
-                $timeout(() => {
-                    $ionicLoading.hide();
-                    $state.go("main.feed.posts");
+            this.$ionicLoading.show().then(() => {
+                this.$timeout(() => {
+                    this.$ionicLoading.hide();
+                    this.$state.go("main.feed.posts");
                 },1500);
             });
         }
 
-        function signupPressed() {
+        public signupPressed() {
             console.log("Sign up pressed");
-            $state.go("signup");
+            this.$state.go("signup");
         }
 
-        function emailChanged() {
-            console.log("Email changed: "+JSON.stringify(self.email));
+        public emailChanged() {
+            console.log("Email changed: "+JSON.stringify(this.email));
         }
 
-        function passwordChanged() {
-            console.log("Password changed: "+JSON.stringify(self.password));
+        public passwordChanged() {
+            console.log("Password changed: "+JSON.stringify(this.password));
         }
 
     }
+
+    const app = angular.module("iglubook");
+    app.controller("LoginController",LoginController);
 
 })();

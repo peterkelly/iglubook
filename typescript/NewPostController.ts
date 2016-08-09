@@ -5,35 +5,36 @@
 
 (function() {
 
-    const app = angular.module("iglubook");
-    app.controller("NewPostController",NewPostController);
+    class NewPostController {
+        public content: { text: string };
 
-    function NewPostController(
-        $rootScope: angular.IRootScopeService,
-        $ionicLoading: fixes.IonicLoadingService,
-        $ionicHistory: ionic.navigation.IonicHistoryService,
-        $timeout: angular.ITimeoutService,
-        APIService: IAPIService) {
+        public constructor(
+            private $rootScope: angular.IRootScopeService,
+            private $ionicLoading: fixes.IonicLoadingService,
+            private $ionicHistory: ionic.navigation.IonicHistoryService,
+            private $timeout: angular.ITimeoutService,
+            private APIService: IAPIService) {
 
-        const self = this;
+            this.content = { text: "" };
+        }
 
-        self.content = { text: "" };
-        self.postPressed = postPressed;
-
-        function postPressed() {
-            console.log("postPressed: content = "+JSON.stringify(self.content.text));
-            $ionicLoading.show().then(() => {
-                APIService.newPost(new Date(),self.content.text).then((post) => {
+        public postPressed() {
+            console.log("postPressed: content = "+JSON.stringify(this.content.text));
+            this.$ionicLoading.show().then(() => {
+                this.APIService.newPost(new Date(),this.content.text).then((post) => {
                     // FIXME: This isn't a clean way to do it; broadcast an event instead
-                    (<any>$rootScope).feedDirty();
-                    $ionicHistory.goBack();
+                    (<any>this.$rootScope).feedDirty();
+                    this.$ionicHistory.goBack();
                 }).catch((error) => {
                     console.log("Error submitting new post: "+error);
                 }).finally(() => {
-                    $ionicLoading.hide();
+                    this.$ionicLoading.hide();
                 });
             });
         }
     }
+
+    const app = angular.module("iglubook");
+    app.controller("NewPostController",NewPostController);
 
 })();
