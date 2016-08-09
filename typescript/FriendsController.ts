@@ -10,6 +10,7 @@
 
     function FriendsController(api,countries) {
         const self = this;
+
         self.friends = null;
         self.countryNamesByCode = countries.countryNamesByCode;
 

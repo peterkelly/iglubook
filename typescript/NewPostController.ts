@@ -10,9 +10,11 @@
 
     function NewPostController($rootScope,$ionicLoading,$ionicHistory,api) {
         const self = this;
-        self.content = { text: "" };
 
-        self.postPressed = function() {
+        self.content = { text: "" };
+        self.postPressed = postPressed;
+
+        function postPressed() {
             console.log("postPressed: content = "+JSON.stringify(self.content.text));
             $ionicLoading.show().then(function() {
                 api.newPost(new Date(),self.content.text).then(function(post) {

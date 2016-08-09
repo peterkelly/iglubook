@@ -10,9 +10,17 @@
 
     function FeedController($ionicLoading,$timeout,$state,api,$rootScope) {
         const self = this;
-        self.posts = null;
 
-        self.doRefresh = function() {
+        self.posts = null;
+        self.doRefresh = doRefresh;
+        self.likePressed = likePressed;
+        self.commentsPressed = commentsPressed;
+
+        $rootScope.feedDirty = feedDirty;
+
+        self.doRefresh();
+
+        function doRefresh() {
             api.getFeedContents().then(function(posts) {
                 console.log("getFeedContents: success");
                 self.posts = posts;
@@ -23,23 +31,21 @@
             });
         }
 
-        self.likePressed = function(post) {
+        function likePressed(post) {
             // api.likePost is an asynchronous function, but to avoid a delay in the UI, optimistically
             // assume that it will succeed, and update the like count
             post.likes++;
             api.likePost(post);
         }
 
-        self.commentsPressed = function(post) {
+        function commentsPressed(post) {
             console.log("Comments pressed: "+post.id);
             $state.go("main.feed.comments");
         }
 
-        $rootScope.feedDirty = function() {
+        function feedDirty() {
             self.doRefresh();
         }
-
-        self.doRefresh();
     }
 
 })();

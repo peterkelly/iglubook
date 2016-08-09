@@ -10,18 +10,20 @@
 
     function ProfileController($ionicLoading,$timeout,api,countries) {
         const self = this;
+
         self.user = null;
         self.notifications = true;
         self.test = null;
         self.countries = countries.countries;
         self.countryNamesByCode = countries.countryNamesByCode;
+        self.updatePressed = updatePressed;
 
         api.getUser().then(function(user) {
             self.user = user;
             self.userError = "Failed to load";
         });
 
-        self.updatePressed = function() {
+        function updatePressed() {
             console.log("country = "+self.user.country+", gender = "+self.user.gender);
             $ionicLoading.show({ template: "Saving changes..." }).then(function() {
                 $timeout(function() {

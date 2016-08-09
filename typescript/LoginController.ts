@@ -10,18 +10,16 @@
 
     function LoginController($scope,$state,$timeout,$ionicLoading) {
         const self = this;
+
         self.email = "";
         self.password = "";
+        self.loginPressed = loginPressed;
+        self.signupPressed = signupPressed;
 
-        $scope.$watch(() => self.email,function() {
-            console.log("Email changed: "+JSON.stringify(self.email));
-        });
+        $scope.$watch(() => self.email,emailChanged);
+        $scope.$watch(() => self.password,passwordChanged);
 
-        $scope.$watch(() => self.password,function() {
-            console.log("Password changed: "+JSON.stringify(self.password));
-        });
-
-        self.loginPressed = function() {
+        function loginPressed() {
             console.log("Log in pressed");
             console.log("email = "+self.email);
             console.log("password = "+self.password);
@@ -32,12 +30,21 @@
                     $state.go("main.feed.posts");
                 },1500);
             });
-        };
+        }
 
-        self.signupPressed = function() {
+        function signupPressed() {
             console.log("Sign up pressed");
             $state.go("signup");
-        };
+        }
+
+        function emailChanged() {
+            console.log("Email changed: "+JSON.stringify(self.email));
+        }
+
+        function passwordChanged() {
+            console.log("Password changed: "+JSON.stringify(self.password));
+        }
+
     }
 
 })();

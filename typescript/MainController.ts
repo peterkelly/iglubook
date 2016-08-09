@@ -10,7 +10,13 @@
 
     function MainController($scope,$state,$ionicSideMenuDelegate,$ionicPopup,$ionicModal) {
         const self = this;
+
         self.newPostModal = null;
+        self.toggleMenu = toggleMenu;
+        self.logoutPressed = logoutPressed;
+        self.showNewPost = showNewPost;
+        self.hideNewPost = hideNewPost;
+
         $ionicModal.fromTemplateUrl("newpost.html",{ scope: $scope }).then(function(modal) {
             console.log("Loaded new post modal");
             self.newPostModal = modal;
@@ -18,11 +24,11 @@
             console.log("Failed to load new post modal: "+error);
         });
 
-        self.toggleMenu = function() {
+        function toggleMenu() {
             $ionicSideMenuDelegate.toggleLeft();
         }
 
-        self.logoutPressed = function() {
+        function logoutPressed() {
             $ionicPopup.show({
                 title: "Log out",
                 template: "Are you sure you want to log out?",
@@ -36,12 +42,12 @@
             });
         }
 
-        self.showNewPost = function() {
+        function showNewPost() {
             // self.newPostModal.show();
             $state.go("main.feed.newpost");
         }
 
-        self.hideNewPost = function() {
+        function hideNewPost() {
             self.newPostModal.hide();
         }
     }
