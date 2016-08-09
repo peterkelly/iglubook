@@ -1,4 +1,6 @@
-app.service("countries",function() {
+app.service("countries",countries);
+
+function countries() {
 
     var countries = [
         {
@@ -1000,4 +1002,4 @@ app.service("countries",function() {
         countries: countries,
         countryNamesByCode: countryNamesByCode,
     }
-})
+}

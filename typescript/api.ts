@@ -197,9 +197,10 @@ function deepCopy(value) {
     }
 }
 
-app.service("api",function($timeout,$q,$http) {
-    var nextPostId = 10;
+app.service("api",api);
 
+function api($timeout,$q,$http) {
+    var nextPostId = 10;
 
     return {
         getFeedContents: function() {
@@ -269,4 +270,4 @@ app.service("api",function($timeout,$q,$http) {
         //     });
         // }
     }
-});
+}

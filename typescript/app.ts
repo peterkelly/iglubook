@@ -87,7 +87,9 @@ app.config(function ($stateProvider,$urlRouterProvider) {
     $urlRouterProvider.otherwise("/login")
 });
 
-app.directive("igluLoadable",function() {
+app.directive("igluLoadable",IgluLoadable)
+
+function IgluLoadable() {
     return {
         restrict: "E",
         replace: true,
@@ -109,10 +111,11 @@ app.directive("igluLoadable",function() {
                 "</div>");
         },
     }
-})
+}
 
-app.controller("LoginController",function($scope,$state,$timeout,$ionicLoading) {
+app.controller("LoginController",LoginController);
 
+function LoginController($scope,$state,$timeout,$ionicLoading) {
     $scope.email = "";
     $scope.password = "";
 
@@ -141,14 +144,16 @@ app.controller("LoginController",function($scope,$state,$timeout,$ionicLoading) 
         console.log("Sign up pressed");
         $state.go("signup");
     };
+}
 
-});
+app.controller("SignupController",SignupController);
 
-app.controller("SignupController",function($scope) {
+function SignupController($scope) {
+}
 
-});
+app.controller("FeedController",FeedController);
 
-app.controller("FeedController",function($scope,$ionicLoading,$timeout,$state,api,$rootScope) {
+function FeedController($scope,$ionicLoading,$timeout,$state,api,$rootScope) {
     $scope.posts = null;
 
     $scope.doRefresh = function() {
@@ -179,13 +184,16 @@ app.controller("FeedController",function($scope,$ionicLoading,$timeout,$state,ap
     }
 
     $scope.doRefresh();
-});
+}
 
-app.controller("CommentsController",function($scope) {
-});
+app.controller("CommentsController",CommentsController);
 
-app.controller("ProfileController",function($scope,$ionicLoading,$timeout,api,countries) {
+function CommentsController($scope) {
+}
 
+app.controller("ProfileController",ProfileController);
+
+function ProfileController($scope,$ionicLoading,$timeout,api,countries) {
     $scope.user = null;
     $scope.notifications = true;
     $scope.test = null;
@@ -205,11 +213,11 @@ app.controller("ProfileController",function($scope,$ionicLoading,$timeout,api,co
             },1000);
         })
     }
+}
 
-});
+app.controller("NewPostController",NewPostController);
 
-app.controller("NewPostController",function($scope,$rootScope,$ionicLoading,$ionicHistory,api) {
-
+function NewPostController($scope,$rootScope,$ionicLoading,$ionicHistory,api) {
     $scope.content = { text: "" };
 
     $scope.postPressed = function() {
@@ -225,21 +233,22 @@ app.controller("NewPostController",function($scope,$rootScope,$ionicLoading,$ion
             });
         });
     }
+}
 
-});
+app.controller("FriendsController",FriendsController);
 
-app.controller("FriendsController",function($scope,api,countries) {
+function FriendsController($scope,api,countries) {
     $scope.friends = null;
     $scope.countryNamesByCode = countries.countryNamesByCode;
 
     api.getFriends().then(function(friends) {
         $scope.friends = friends;
     });
+}
 
-});
+app.controller("MainController",MainController);
 
-app.controller("MainController",function($scope,$state,$ionicSideMenuDelegate,$ionicPopup,$ionicModal) {
-
+function MainController($scope,$state,$ionicSideMenuDelegate,$ionicPopup,$ionicModal) {
     $scope.newPostModal = null;
     $ionicModal.fromTemplateUrl("newpost.html",{ scope: $scope }).then(function(modal) {
         console.log("Loaded new post modal");
@@ -274,5 +283,4 @@ app.controller("MainController",function($scope,$state,$ionicSideMenuDelegate,$i
     $scope.hideNewPost = function() {
         $scope.newPostModal.hide();
     }
-
-});
+}
