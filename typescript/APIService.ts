@@ -211,72 +211,70 @@
         var nextPostId = 10;
 
         return {
-            getFeedContents: function() {
-                return $q(function(resolve,reject) {
-                    $timeout(function() {
-                        resolve(deepCopy(samplePosts));
-                    },fakeTimeout);
-                });
-            },
-            getFriends: function() {
-                return $q(function(resolve,reject) {
-                    $timeout(function() {
-                        resolve(deepCopy(sampleUsers));
-                    },fakeTimeout);
-                });
-            },
-            getUser: function() {
-                return $q(function(resolve,reject) {
-                    $timeout(function() {
-                        resolve(deepCopy(sampleUsers[0]));
-                    },fakeTimeout);
-                });
-            },
-            newPost: function(date,content) {
-                var postId = nextPostId++;
-                var post = {
-                    id: postId,
-                    posterId: sampleUsers[0].id,
-                    posterFullName: sampleUsers[0].firstName+" "+sampleUsers[0].lastName,
-                    date: date.toString(),
-                    content: content,
-                    likes: 0,
-                    comments: 0,
-                };
-                samplePosts.splice(0,0,post);
+            getFeedContents: getFeedContents,
+            getFriends: getFriends,
+            getUser: getUser,
+            newPost: newPost,
+            likePost: likePost,
+        }
 
-                return $q(function(resolve,reject) {
-                    $timeout(function() {
-                        resolve(deepCopy(post));
-                    },fakeTimeout);
-                });
-            },
-            likePost: function(post) {
-                return $q(function(resolve,reject) {
-                    $timeout(function() {
-                        var resultPost = null;
-                        for (var i = 0; i < samplePosts.length; i++) {
-                            if (samplePosts[i].id == post.id) {
-                                samplePosts[i].likes++;
-                                resultPost = deepCopy(samplePosts[i]);
-                            }
+        function getFeedContents() {
+            return $q(function(resolve,reject) {
+                $timeout(function() {
+                    resolve(deepCopy(samplePosts));
+                },fakeTimeout);
+            });
+        }
+
+        function getFriends() {
+            return $q(function(resolve,reject) {
+                $timeout(function() {
+                    resolve(deepCopy(sampleUsers));
+                },fakeTimeout);
+            });
+        }
+
+        function getUser() {
+            return $q(function(resolve,reject) {
+                $timeout(function() {
+                    resolve(deepCopy(sampleUsers[0]));
+                },fakeTimeout);
+            });
+        }
+
+        function newPost(date,content) {
+            var postId = nextPostId++;
+            var post = {
+                id: postId,
+                posterId: sampleUsers[0].id,
+                posterFullName: sampleUsers[0].firstName+" "+sampleUsers[0].lastName,
+                date: date.toString(),
+                content: content,
+                likes: 0,
+                comments: 0,
+            };
+            samplePosts.splice(0,0,post);
+
+            return $q(function(resolve,reject) {
+                $timeout(function() {
+                    resolve(deepCopy(post));
+                },fakeTimeout);
+            });
+        }
+
+        function likePost(post) {
+            return $q(function(resolve,reject) {
+                $timeout(function() {
+                    var resultPost = null;
+                    for (var i = 0; i < samplePosts.length; i++) {
+                        if (samplePosts[i].id == post.id) {
+                            samplePosts[i].likes++;
+                            resultPost = deepCopy(samplePosts[i]);
                         }
-                        resolve(resultPost);
-                    },fakeTimeout);
-                });
-            },
-            //     return $q(function(resolve,reject) {
-            //         $http({
-            //             method: "GET",
-            //             url: "http://localhost:3000/posts",
-            //         }).then(function(response) {
-            //             console.log("Resposne",response);
-            //             resolve(response.data);
-            //         }).catch(function(error) {
-            //             reject(error);
-            //         });
-            //     });
-            // }
+                    }
+                    resolve(resultPost);
+                },fakeTimeout);
+            });
         }
     }
 
