@@ -16,8 +16,7 @@
             private APIService: IAPIService,
             private $rootScope: angular.IRootScopeService) {
 
-            // FIXME: This isn't a clean way to do it; broadcast an event instead
-            (<any>$rootScope).feedDirty = () => this.feedDirty();
+            $rootScope.$on("feed-dirty",() => this.feedDirty());
             this.doRefresh();
         }
 

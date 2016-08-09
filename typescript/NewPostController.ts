@@ -22,8 +22,7 @@
             console.log("postPressed: content = "+JSON.stringify(this.content.text));
             this.$ionicLoading.show().then(() => {
                 this.APIService.newPost(new Date(),this.content.text).then((post) => {
-                    // FIXME: This isn't a clean way to do it; broadcast an event instead
-                    (<any>this.$rootScope).feedDirty();
+                    this.$rootScope.$emit("feed-dirty");
                     this.$ionicHistory.goBack();
                 }).catch((error) => {
                     console.log("Error submitting new post: "+error);
