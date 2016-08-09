@@ -22,14 +22,14 @@
 
         function postPressed() {
             console.log("postPressed: content = "+JSON.stringify(self.content.text));
-            $ionicLoading.show().then(function() {
-                APIService.newPost(new Date(),self.content.text).then(function(post) {
+            $ionicLoading.show().then(() => {
+                APIService.newPost(new Date(),self.content.text).then((post) => {
                     // FIXME: This isn't a clean way to do it; broadcast an event instead
                     (<any>$rootScope).feedDirty();
                     $ionicHistory.goBack();
-                }).catch(function(error) {
+                }).catch((error) => {
                     console.log("Error submitting new post: "+error);
-                }).finally(function() {
+                }).finally(() => {
                     $ionicLoading.hide();
                 });
             });

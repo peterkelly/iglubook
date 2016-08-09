@@ -23,10 +23,10 @@
         self.showNewPost = showNewPost;
         self.hideNewPost = hideNewPost;
 
-        $ionicModal.fromTemplateUrl("newpost.html",{ scope: $scope }).then(function(modal) {
+        $ionicModal.fromTemplateUrl("newpost.html",{ scope: $scope }).then((modal) => {
             console.log("Loaded new post modal");
             self.newPostModal = modal;
-        }).catch(function(error) {
+        }).catch((error) => {
             console.log("Failed to load new post modal: "+error);
         });
 
@@ -43,7 +43,7 @@
                       type: "button-positive" },
                     { text: "Log out",
                       type: "button-assertive",
-                      onTap: function() { $state.go("login"); } },
+                      onTap: () => $state.go("login") },
                 ],
             });
         }

@@ -17,7 +17,7 @@
         self.friends = null;
         self.countryNamesByCode = countries.countryNamesByCode;
 
-        APIService.getFriends().then(function(friends) {
+        APIService.getFriends().then((friends) => {
             self.friends = friends;
         });
     }

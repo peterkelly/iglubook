@@ -29,8 +29,8 @@
             console.log("email = "+self.email);
             console.log("password = "+self.password);
             // $state.go("main.feed");
-            $ionicLoading.show().then(function() {
-                $timeout(function() {
+            $ionicLoading.show().then(() => {
+                $timeout(() => {
                     $ionicLoading.hide();
                     $state.go("main.feed.posts");
                 },1500);

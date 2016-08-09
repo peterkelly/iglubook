@@ -28,12 +28,12 @@
         self.doRefresh();
 
         function doRefresh() {
-            APIService.getFeedContents().then(function(posts) {
+            APIService.getFeedContents().then((posts) => {
                 console.log("getFeedContents: success");
                 self.posts = posts;
-            }).catch(function(error) {
+            }).catch((error) => {
                 console.log("getFeedContents: failure: "+error);
-            }).finally(function() {
+            }).finally(() => {
                 self.$broadcast("scroll.refreshComplete");
             });
         }

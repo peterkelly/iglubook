@@ -14,7 +14,7 @@
             replace: true,
             transclude: true,
             // FIXME: Not sure what the types of elem and attr are supposed to be here
-            template: function(elem: any, attr: any) {
+            template: (elem: any, attr: any) => {
                 var property = elem[0].getAttribute("property");
                 return (
                     "<div ng-switch="+JSON.stringify(property)+">"+

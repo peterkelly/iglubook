@@ -266,26 +266,20 @@ interface IAPIPost {
         return service;
 
         function getFeedContents(): IPromise<IAPIPost[]> {
-            return $q<IAPIPost[]>(function(resolve,reject) {
-                $timeout(function() {
-                    resolve(copyArray(samplePosts,copyPost));
-                },fakeTimeout);
+            return $q<IAPIPost[]>((resolve,reject) => {
+                $timeout(() => resolve(copyArray(samplePosts,copyPost)),fakeTimeout);
             });
         }
 
         function getFriends(): IPromise<IAPIUser[]> {
-            return $q<IAPIUser[]>(function(resolve,reject) {
-                $timeout(function() {
-                    resolve(copyArray(sampleUsers,copyUser));
-                },fakeTimeout);
+            return $q<IAPIUser[]>((resolve,reject) => {
+                $timeout(() => resolve(copyArray(sampleUsers,copyUser)),fakeTimeout);
             });
         }
 
         function getUser(): IPromise<IAPIUser> {
-            return $q<IAPIUser>(function(resolve,reject): void {
-                $timeout(function(): void {
-                    resolve(copyUser(sampleUsers[0]));
-                },fakeTimeout);
+            return $q<IAPIUser>((resolve,reject) => {
+                $timeout(() => resolve(copyUser(sampleUsers[0])),fakeTimeout);
             });
         }
 
@@ -302,16 +296,14 @@ interface IAPIPost {
             };
             samplePosts.splice(0,0,post);
 
-            return $q<IAPIPost>(function(resolve,reject) {
-                $timeout(function() {
-                    resolve(copyPost(post));
-                },fakeTimeout);
+            return $q<IAPIPost>((resolve,reject) => {
+                $timeout(() => resolve(copyPost(post)),fakeTimeout);
             });
         }
 
         function likePost(post: IAPIPost): IPromise<IAPIPost> {
-            return $q<IAPIPost>(function(resolve,reject) {
-                $timeout(function() {
+            return $q<IAPIPost>((resolve,reject) => {
+                $timeout(() => {
                     var resultPost: IAPIPost = null;
                     for (var i = 0; i < samplePosts.length; i++) {
                         if (samplePosts[i].id == post.id) {

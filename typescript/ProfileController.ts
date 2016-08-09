@@ -23,17 +23,15 @@
         self.countryNamesByCode = countries.countryNamesByCode;
         self.updatePressed = updatePressed;
 
-        APIService.getUser().then(function(user) {
+        APIService.getUser().then((user) => {
             self.user = user;
             self.userError = "Failed to load";
         });
 
         function updatePressed() {
             console.log("country = "+self.user.country+", gender = "+self.user.gender);
-            $ionicLoading.show({ template: "Saving changes..." }).then(function() {
-                $timeout(function() {
-                    $ionicLoading.hide();
-                },1000);
+            $ionicLoading.show({ template: "Saving changes..." }).then(() => {
+                $timeout(() => $ionicLoading.hide(),1000);
             })
         }
     }
