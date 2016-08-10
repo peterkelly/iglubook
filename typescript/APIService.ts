@@ -11,15 +11,16 @@ interface IAPIService {
     getUser(): IPromise<IUser>;
     newPost(date: Date, content: string): IPromise<IPost>;
     likePost(post: IPost): IPromise<IPost>;
+    unlikePost(post: IPost): IPromise<IPost>;
     getComments(post: IPost): IPromise<IComment[]>;
-    addComment(post: IPost, text: string): IPromise<IComment>;
-    likeComment(comment: IComment): IPromise<void>;
+    addComment(post: IPost, date: string, content: string): IPromise<IComment>;
+    likeComment(comment: IComment): IPromise<IComment>;
+    unlikeComment(comment: IComment): IPromise<IComment>;
 }
 
 interface IUser {
     id: number;
     email: string;
-    password: string;
     firstName: string;
     lastName: string;
     gender: string;
@@ -32,18 +33,18 @@ interface IPost {
     posterFullName: string;
     date: string;
     content: string;
-    likes: number;
-    comments: number;
+    likeCount: number;
+    commentCount: number;
 }
 
 interface IComment {
-    commentId: number;
+    id: number;
     postId: number;
     userId: number;
-    userFullName: number,
+    userFullName: string;
     date: string;
     likeCount: number;
-    text: string;
+    content: string;
 }
 
 (function() {
@@ -54,7 +55,6 @@ interface IComment {
         return {
             id: user.id,
             email: user.email,
-            password: user.password,
             firstName: user.firstName,
             lastName: user.lastName,
             gender: user.gender,
@@ -69,8 +69,8 @@ interface IComment {
             posterFullName: post.posterFullName,
             date: post.date,
             content: post.content,
-            likes: post.likes,
-            comments: post.comments,
+            likeCount: post.likeCount,
+            commentCount: post.commentCount,
         }
     }
 
@@ -83,82 +83,115 @@ interface IComment {
 
     class APIService implements IAPIService {
         private nextPostId: number = 10;
-        private userId: number;
+        private authToken: string = "1";
 
         public constructor(
             private $timeout: angular.ITimeoutService,
             private $q: angular.IQService,
             private $http: angular.IHttpService,
-            private SampleData: ISampleData) {
-            this.userId = SampleData.users[0].id;
+            private SampleData: ISampleData,
+            private BackendService: IBackendService) {
         }
 
         public getFeedContents(): IPromise<IPost[]> {
             return this.$q<IPost[]>((resolve,reject) => {
-                this.$timeout(() => resolve(copyArray(this.SampleData.posts,copyPost)),fakeTimeout);
+                this.$timeout(() => {
+                    this.BackendService.getFeedContents(this.authToken)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
+                },fakeTimeout);
             });
         }
 
         public getFriends(): IPromise<IUser[]> {
             return this.$q<IUser[]>((resolve,reject) => {
-                this.$timeout(() => resolve(copyArray(this.SampleData.users,copyUser)),fakeTimeout);
+                this.$timeout(() => {
+                    this.BackendService.getFriends(this.authToken)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
+                },fakeTimeout);
             });
         }
 
         public getUser(): IPromise<IUser> {
             return this.$q<IUser>((resolve,reject) => {
-                this.$timeout(() => resolve(copyUser(this.SampleData.users[0])),fakeTimeout);
+                this.$timeout(() => {
+                    this.BackendService.getUser(this.authToken)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
+                },fakeTimeout);
             });
         }
 
         public newPost(date: Date, content: string): IPromise<IPost> {
-            var postId = this.nextPostId++;
-            var post = {
-                id: postId,
-                posterId: this.SampleData.users[0].id,
-                posterFullName: this.SampleData.users[0].firstName+" "+this.SampleData.users[0].lastName,
-                date: date.toString(),
-                content: content,
-                likes: 0,
-                comments: 0,
-            };
-            this.SampleData.posts.splice(0,0,post);
-
             return this.$q<IPost>((resolve,reject) => {
-                this.$timeout(() => resolve(copyPost(post)),fakeTimeout);
+                this.$timeout(() => {
+                    this.BackendService.newPost(this.authToken,date.toString(),content)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
+                },fakeTimeout);
             });
         }
 
         public likePost(post: IPost): IPromise<IPost> {
             return this.$q<IPost>((resolve,reject) => {
                 this.$timeout(() => {
-                    var resultPost: IPost | null = null;
-                    for (var i = 0; i < this.SampleData.posts.length; i++) {
-                        if (this.SampleData.posts[i].id == post.id) {
-                            this.SampleData.posts[i].likes++;
-                            copyPost(this.SampleData.posts[i]);
-                        }
-                    }
-                    if (resultPost !== null)
-                        resolve(resultPost);
-                    else
-                        reject(new Error("Post not found"));
+                    this.BackendService.likePost(this.authToken,post.id)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
+                },fakeTimeout);
+            });
+        }
+
+        public unlikePost(post: IPost): IPromise<IPost> {
+            return this.$q<IPost>((resolve,reject) => {
+                this.$timeout(() => {
+                    this.BackendService.unlikePost(this.authToken,post.id)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
                 },fakeTimeout);
             });
         }
 
         public getComments(post: IPost): IPromise<IComment[]> {
-            throw new Error("getComments not implemented");
+            return this.$q<IComment[]>((resolve,reject) => {
+                this.$timeout(() => {
+                    this.BackendService.getComments(this.authToken,post.id)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
+                },fakeTimeout);
+            });
         }
 
-        public addComment(post: IPost, text: string): IPromise<IComment> {
-            throw new Error("addComment not implemented");
+        public addComment(post: IPost, date: string, content: string): IPromise<IComment> {
+            return this.$q<IComment>((resolve,reject) => {
+                this.$timeout(() => {
+                    this.BackendService.addComment(this.authToken,post.id,date,content)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
+                },fakeTimeout);
+            });
         }
 
-        public likeComment(comment: IComment): IPromise<void> {
-            throw new Error("likeComment not implemented");
+        public likeComment(comment: IComment): IPromise<IComment> {
+            return this.$q<IComment>((resolve,reject) => {
+                this.$timeout(() => {
+                    this.BackendService.likeComment(this.authToken,comment.id)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
+                },fakeTimeout);
+            });
         }
 
+        public unlikeComment(comment: IComment): IPromise<IComment> {
+            return this.$q<IComment>((resolve,reject) => {
+                this.$timeout(() => {
+                    this.BackendService.unlikeComment(this.authToken,comment.id)
+                        .then((result) => resolve(result))
+                        .catch((error) => reject(error));
+                },fakeTimeout);
+            });
+        }
     }
 
     const app = angular.module("iglubook");

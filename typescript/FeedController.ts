@@ -34,7 +34,7 @@
         public likePressed(post: IPost) {
             // APIService.likePost is an asynchronous function, but to avoid a delay in the UI, optimistically
             // assume that it will succeed, and update the like count
-            post.likes++;
+            post.likeCount++;
             this.APIService.likePost(post);
         }
 

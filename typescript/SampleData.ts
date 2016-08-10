@@ -14,7 +14,6 @@ interface ISampleData {
         {
             id: 1,
             email: "demo@iglu.inet",
-            password: "",
             firstName: "Demo",
             lastName: "User",
             gender: "M",
@@ -23,7 +22,6 @@ interface ISampleData {
         {
             id: 2,
             email: "jennifer@iglubook.com",
-            password: "",
             firstName: "Jennifer",
             lastName: "Lawrence",
             gender: "F",
@@ -32,7 +30,6 @@ interface ISampleData {
         {
             id: 3,
             email: "robert@iglubook.com",
-            password: "",
             firstName: "Robert",
             lastName: "Downey Jr",
             gender: "M",
@@ -41,7 +38,6 @@ interface ISampleData {
         {
             id: 4,
             email: "leo@iglubook.com",
-            password: "",
             firstName: "Leonardo",
             lastName: "DiCaprio",
             gender: "M",
@@ -50,7 +46,6 @@ interface ISampleData {
         {
             id: 5,
             email: "brad@iglubook.com",
-            password: "",
             firstName: "Bradley",
             lastName: "Cooper",
             gender: "M",
@@ -59,7 +54,6 @@ interface ISampleData {
         {
             id: 6,
             email: "the@rock.com",
-            password: "",
             firstName: "Dwayne",
             lastName: "Johnson",
             gender: "M",
@@ -68,7 +62,6 @@ interface ISampleData {
         {
             id: 7,
             email: "hugh@iglubook.com",
-            password: "",
             firstName: "Hugh",
             lastName: "Jackman",
             gender: "M",
@@ -77,7 +70,6 @@ interface ISampleData {
         {
             id: 8,
             email: "sandra@iglubook.com",
-            password: "",
             firstName: "Sandra",
             lastName: "Bullock",
             gender: "F",
@@ -86,7 +78,6 @@ interface ISampleData {
         {
             id: 9,
             email: "scarlett@iglubook.com",
-            password: "",
             firstName: "Scarlett",
             lastName: "Johansson",
             gender: "F",
@@ -104,8 +95,8 @@ interface ISampleData {
             "egestas pretium. Nunc pellentesque venenatis felis sit amet ullamcorper. Phasellus arcu "+
             "lacus, placerat eu est quis, bibendum hendrerit dolor. Sed ac sem tellus. Mauris "+
             "tristique, ante ut sodales placerat, nisi ex faucibus elit, eu pretium felis mi et metus.",
-            likes: 4,
-            comments: 0,
+            likeCount: 4,
+            commentCount: 0,
         },
         {
             id: 2,
@@ -116,8 +107,8 @@ interface ISampleData {
             "luctus eros et mattis faucibus. Suspendisse potenti. In hac habitasse platea dictumst. "+
             "Ut venenatis, lacus vel suscipit placerat, leo ipsum tincidunt dui, quis pellentesque "+
             "nibh justo et est.",
-            likes: 17,
-            comments: 5,
+            likeCount: 17,
+            commentCount: 5,
         },
         {
             id: 3,
@@ -126,8 +117,8 @@ interface ISampleData {
             date: "11 July 4:20pm",
             content: "Fusce felis nisl, cursus quis malesuada sed, varius et sapien. Pellentesque "+
             "sed porta turpis. Morbi varius enim et massa tristique, et fermentum purus congue.",
-            likes: 11,
-            comments: 3,
+            likeCount: 11,
+            commentCount: 3,
         },
         {
             id: 4,
@@ -138,8 +129,8 @@ interface ISampleData {
             "commodo sapien at diam gravida lobortis. Quisque ac nisl eu nisi fringilla blandit eu "+
             "ac elit. Mauris commodo eleifend mattis. Praesent volutpat fringilla dictum. Etiam "+
             "viverra ultricies dolor ut bibendum. Sed ullamcorper pretium sem nec suscipit.",
-            likes: 0,
-            comments: 19,
+            likeCount: 0,
+            commentCount: 19,
         },
         {
             id: 5,
@@ -150,8 +141,8 @@ interface ISampleData {
             "Mauris cursus blandit magna, a accumsan felis porttitor et. Etiam a libero a ante "+
             "tincidunt fringilla id et ante. Mauris a lacus eu eros pharetra imperdiet id quis metus. "+
             "Fusce at libero dui.",
-            likes: 6,
-            comments: 2,
+            likeCount: 6,
+            commentCount: 2,
         },
         {
             id: 6,
@@ -160,8 +151,8 @@ interface ISampleData {
             date: "12 July 12:39pm",
             content: "Nam suscipit consequat nulla, vitae sodales magna mattis blandit. Donec "+
             "vehicula mattis quam, nec sodales tellus sagittis interdum.",
-            likes: 10,
-            comments: 6,
+            likeCount: 10,
+            commentCount: 6,
         },
         {
             id: 7,
@@ -172,8 +163,8 @@ interface ISampleData {
             "enim magna, ut fringilla justo luctus sit amet. Ut ornare gravida porttitor. Vivamus sit "+
             "amet augue aliquet, finibus augue nec, pharetra metus. Vestibulum non nisi id lorem "+
             "maximus feugiat eget ut ex.",
-            likes: 3,
-            comments: 3,
+            likeCount: 3,
+            commentCount: 3,
         },
         {
             id: 8,
@@ -183,8 +174,8 @@ interface ISampleData {
             content: "Maecenas fringilla ornare consectetur. Vestibulum at laoreet augue. Duis id "+
             "fringilla massa, vitae imperdiet leo. Pellentesque eu gravida diam. Morbi venenatis "+
             "pellentesque nisl ac porta. Donec sollicitudin urna massa, ac molestie urna cursus in.",
-            likes: 15,
-            comments: 6,
+            likeCount: 15,
+            commentCount: 6,
         },
     ];
 
