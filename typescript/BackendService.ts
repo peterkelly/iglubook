@@ -153,6 +153,39 @@ interface IBackendService {
             private $q: angular.IQService,
             private SampleData: ISampleData
         ) {
+            // Load sample data
+            for (const user of this.SampleData.users) {
+                this.backend.createUser({
+                    email: user.email,
+                    password: "",
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    gender: user.gender,
+                    country: user.country,
+                });
+            }
+            for (const post of this.SampleData.posts) {
+                const user = this.backend.usersById[post.posterId];
+                if (user === undefined)
+                    throw new Error("No such user: "+post.posterId);
+                this.backend.createPost({
+                    user: user,
+                    date: post.date,
+                    content: post.content,
+                });
+            }
+
+            // Make every user every other users's friend for now
+            for (const firstId in this.backend.usersById) {
+                const firstUser = this.backend.usersById[firstId];
+                for (const secondId in this.backend.usersById) {
+                    const secondUser = this.backend.usersById[secondId];
+                    if ((firstUser !== undefined) && (secondUser !== undefined)) {
+                        // will always be the case - just need these for type guards
+                        firstUser.friends.push(secondUser);
+                    }
+                }
+            }
         }
 
         private userFromAuthToken(authToken: string): UserImpl | undefined {

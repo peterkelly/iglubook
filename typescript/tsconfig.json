@@ -15,7 +15,8 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
         "strictNullChecks": true,
-        "outDir": "../www/js"
+        "outDir": "../www/js",
+        "sourceMap": true
     },
     "exclude": [
         "node_modules",
