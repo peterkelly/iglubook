@@ -49,38 +49,6 @@ interface IComment {
 
 (function() {
 
-    const fakeTimeout = 1000;
-
-    function copyUser(user: IUser): IUser {
-        return {
-            id: user.id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            gender: user.gender,
-            country: user.country,
-        }
-    }
-
-    function copyPost(post: IPost): IPost {
-        return {
-            id: post.id,
-            posterId: post.posterId,
-            posterFullName: post.posterFullName,
-            date: post.date,
-            content: post.content,
-            likeCount: post.likeCount,
-            commentCount: post.commentCount,
-        }
-    }
-
-    function copyArray<T>(array: T[], copyFun: (obj: T) => T): T[] {
-        const result: T[] = [];
-        for (const element of array)
-            result.push(copyFun(element));
-        return result;
-    }
-
     class APIService implements IAPIService {
         private nextPostId: number = 10;
         private authToken: string = "1";
