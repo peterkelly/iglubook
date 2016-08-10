@@ -4,13 +4,13 @@
 /// <reference path="../node_modules/@types/ionic/index.d.ts" />
 
 interface ISampleData {
-    users: IAPIUser[];
-    posts: IAPIPost[];
+    users: IUser[];
+    posts: IPost[];
 }
 
 (function() {
 
-    const users: IAPIUser[] = [
+    const users: IUser[] = [
         {
             id: 1,
             email: "demo@iglu.inet",
@@ -94,7 +94,7 @@ interface ISampleData {
         },
     ];
 
-    const posts: IAPIPost[] = [
+    const posts: IPost[] = [
         {
             id: 1,
             posterId: 2,

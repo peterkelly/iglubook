@@ -6,7 +6,7 @@
 (function() {
 
     class ProfileController {
-        public user: IAPIUser | undefined = undefined;
+        public user: IUser | undefined = undefined;
         public userError: string | undefined = undefined;
         public notifications: boolean = true;
         public countryList: { code: string, name: string }[];

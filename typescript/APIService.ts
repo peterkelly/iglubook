@@ -6,38 +6,38 @@
 type IPromise<T> = angular.IPromise<T>;
 
 interface IAPIService {
-    getFeedContents(): IPromise<IAPIPost[]>;
-    getFriends(): IPromise<IAPIUser[]>;
-    getUser(): IPromise<IAPIUser>;
-    newPost(date: Date, content: string): IPromise<IAPIPost>;
-    likePost(post: IAPIPost): IPromise<IAPIPost>;
+    getFeedContents(): IPromise<IPost[]>;
+    getFriends(): IPromise<IUser[]>;
+    getUser(): IPromise<IUser>;
+    newPost(date: Date, content: string): IPromise<IPost>;
+    likePost(post: IPost): IPromise<IPost>;
 }
 
-interface IAPIUser {
-    id: number,
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    gender: string,
-    country: string,
+interface IUser {
+    id: number;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    country: string;
 }
 
-interface IAPIPost {
-    id: number,
-    posterId: number,
-    posterFullName: string,
-    date: string,
-    content: string,
-    likes: number,
-    comments: number,
+interface IPost {
+    id: number;
+    posterId: number;
+    posterFullName: string;
+    date: string;
+    content: string;
+    likes: number;
+    comments: number;
 }
 
 (function() {
 
     const fakeTimeout = 1000;
 
-    function copyUser(user: IAPIUser): IAPIUser {
+    function copyUser(user: IUser): IUser {
         return {
             id: user.id,
             email: user.email,
@@ -49,7 +49,7 @@ interface IAPIPost {
         }
     }
 
-    function copyPost(post: IAPIPost): IAPIPost {
+    function copyPost(post: IPost): IPost {
         return {
             id: post.id,
             posterId: post.posterId,
@@ -78,25 +78,25 @@ interface IAPIPost {
             private SampleData: ISampleData) {
         }
 
-        public getFeedContents(): IPromise<IAPIPost[]> {
-            return this.$q<IAPIPost[]>((resolve,reject) => {
+        public getFeedContents(): IPromise<IPost[]> {
+            return this.$q<IPost[]>((resolve,reject) => {
                 this.$timeout(() => resolve(copyArray(this.SampleData.posts,copyPost)),fakeTimeout);
             });
         }
 
-        public getFriends(): IPromise<IAPIUser[]> {
-            return this.$q<IAPIUser[]>((resolve,reject) => {
+        public getFriends(): IPromise<IUser[]> {
+            return this.$q<IUser[]>((resolve,reject) => {
                 this.$timeout(() => resolve(copyArray(this.SampleData.users,copyUser)),fakeTimeout);
             });
         }
 
-        public getUser(): IPromise<IAPIUser> {
-            return this.$q<IAPIUser>((resolve,reject) => {
+        public getUser(): IPromise<IUser> {
+            return this.$q<IUser>((resolve,reject) => {
                 this.$timeout(() => resolve(copyUser(this.SampleData.users[0])),fakeTimeout);
             });
         }
 
-        public newPost(date: Date, content: string): IPromise<IAPIPost> {
+        public newPost(date: Date, content: string): IPromise<IPost> {
             var postId = this.nextPostId++;
             var post = {
                 id: postId,
@@ -109,15 +109,15 @@ interface IAPIPost {
             };
             this.SampleData.posts.splice(0,0,post);
 
-            return this.$q<IAPIPost>((resolve,reject) => {
+            return this.$q<IPost>((resolve,reject) => {
                 this.$timeout(() => resolve(copyPost(post)),fakeTimeout);
             });
         }
 
-        public likePost(post: IAPIPost): IPromise<IAPIPost> {
-            return this.$q<IAPIPost>((resolve,reject) => {
+        public likePost(post: IPost): IPromise<IPost> {
+            return this.$q<IPost>((resolve,reject) => {
                 this.$timeout(() => {
-                    var resultPost: IAPIPost | null = null;
+                    var resultPost: IPost | null = null;
                     for (var i = 0; i < this.SampleData.posts.length; i++) {
                         if (this.SampleData.posts[i].id == post.id) {
                             this.SampleData.posts[i].likes++;

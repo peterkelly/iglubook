@@ -6,7 +6,7 @@
 (function() {
 
     class FriendsController {
-        private friends: IAPIUser[] | null = null;
+        private friends: IUser[] | null = null;
         private countryNamesByCode: { [code: string]: string };
 
         public constructor(

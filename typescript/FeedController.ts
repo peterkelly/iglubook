@@ -6,7 +6,7 @@
 (function() {
 
     class FeedController {
-        private posts: IAPIPost[] | null = null;
+        private posts: IPost[] | null = null;
 
         public constructor(
             private $scope: angular.IScope,
@@ -31,14 +31,14 @@
             });
         }
 
-        public likePressed(post: IAPIPost) {
+        public likePressed(post: IPost) {
             // APIService.likePost is an asynchronous function, but to avoid a delay in the UI, optimistically
             // assume that it will succeed, and update the like count
             post.likes++;
             this.APIService.likePost(post);
         }
 
-        public commentsPressed(post: IAPIPost) {
+        public commentsPressed(post: IPost) {
             console.log("Comments pressed: "+post.id);
             this.$state.go("main.feed.comments");
         }
