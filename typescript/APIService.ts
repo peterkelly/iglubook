@@ -94,103 +94,43 @@ interface IComment {
         }
 
         public getFeedContents(): IPromise<IPost[]> {
-            return this.$q<IPost[]>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.getFeedContents(this.authToken)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.getFeedContents(this.authToken);
         }
 
         public getFriends(): IPromise<IUser[]> {
-            return this.$q<IUser[]>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.getFriends(this.authToken)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.getFriends(this.authToken);
         }
 
         public getUser(): IPromise<IUser> {
-            return this.$q<IUser>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.getUser(this.authToken)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.getUser(this.authToken);
         }
 
         public newPost(date: Date, content: string): IPromise<IPost> {
-            return this.$q<IPost>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.newPost(this.authToken,date.toString(),content)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.newPost(this.authToken,date.toString(),content);
         }
 
         public likePost(post: IPost): IPromise<IPost> {
-            return this.$q<IPost>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.likePost(this.authToken,post.id)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.likePost(this.authToken,post.id);
         }
 
         public unlikePost(post: IPost): IPromise<IPost> {
-            return this.$q<IPost>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.unlikePost(this.authToken,post.id)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.unlikePost(this.authToken,post.id);
         }
 
         public getComments(post: IPost): IPromise<IComment[]> {
-            return this.$q<IComment[]>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.getComments(this.authToken,post.id)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.getComments(this.authToken,post.id);
         }
 
         public addComment(post: IPost, date: string, content: string): IPromise<IComment> {
-            return this.$q<IComment>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.addComment(this.authToken,post.id,date,content)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.addComment(this.authToken,post.id,date,content);
         }
 
         public likeComment(comment: IComment): IPromise<IComment> {
-            return this.$q<IComment>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.likeComment(this.authToken,comment.id)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.likeComment(this.authToken,comment.id);
         }
 
         public unlikeComment(comment: IComment): IPromise<IComment> {
-            return this.$q<IComment>((resolve,reject) => {
-                this.$timeout(() => {
-                    this.BackendService.unlikeComment(this.authToken,comment.id)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                },fakeTimeout);
-            });
+            return this.BackendService.unlikeComment(this.authToken,comment.id);
         }
     }
 

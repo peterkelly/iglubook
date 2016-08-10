@@ -208,236 +208,177 @@ interface IBackendService {
             this.$timeout(fun,this.fakeTimeout);
         }
 
-        public getFeedContents(authToken: string): IPromise<IPost[]> {
-            return this.$q<IPost[]>((resolve,reject) => {
-                this.delay(() => {
+        private authenticate<T>(
+            authToken: string,
+            fun: (
+                resolve: angular.IQResolveReject<T>,
+                reject: angular.IQResolveReject<any>,
+                user: UserImpl
+            ) => void
+        ): IPromise<T> {
+            return this.$q<T>((resolve,reject) => {
+                this.$timeout(() => {
                     const user = this.userFromAuthToken(authToken);
                     if (user === undefined) {
                         reject("Invalid authentication token");
+                        return;
                     }
-                    else {
-                        const posts: IPost[] = [];
-                        for (const friend of user.friends) {
-                            for (const friendPost of friend.posts)
-                                posts.push(friendPost.toJSON());
-                        }
-                        resolve(posts);
-                    }
-                });
+
+                    fun(resolve,reject,user);
+                },this.fakeTimeout);
+            });
+        }
+
+        public getFeedContents(authToken: string): IPromise<IPost[]> {
+            return this.authenticate<IPost[]>(authToken,(resolve,reject,user) => {
+                const posts: IPost[] = [];
+                for (const friend of user.friends) {
+                    for (const friendPost of friend.posts)
+                        posts.push(friendPost.toJSON());
+                }
+                resolve(posts);
             });
         }
 
         public getFriends(authToken: string): IPromise<IUser[]> {
-            return this.$q<IUser[]>((resolve,reject) => {
-                this.delay(() => {
-                    const user = this.userFromAuthToken(authToken);
-                    if (user === undefined) {
-                        reject("Invalid authentication token");
-                    }
-                    else {
-                        const result: IUser[] = [];
-                        for (const friend of user.friends)
-                            result.push(friend.toJSON());
-                        resolve(result);
-                    }
-                });
+            return this.authenticate<IUser[]>(authToken,(resolve,reject,user) => {
+                const result: IUser[] = [];
+                for (const friend of user.friends)
+                    result.push(friend.toJSON());
+                resolve(result);
             });
         }
 
         public getUser(authToken: string): IPromise<IUser> {
-            return this.$q<IUser>((resolve,reject) => {
-                this.delay(() => {
-                    const user = this.userFromAuthToken(authToken);
-                    if (user === undefined) {
-                        reject("Invalid authentication token");
-                    }
-                    else {
-                        resolve(user.toJSON());
-                    }
-                });
+            return this.authenticate<IUser>(authToken,(resolve,reject,user) => {
+                resolve(user.toJSON());
             });
         }
 
         public newPost(authToken: string, date: string, content: string): IPromise<IPost> {
-            return this.$q<IPost>((resolve,reject) => {
-                this.delay(() => {
-                    const user = this.userFromAuthToken(authToken);
-                    if (user === undefined) {
-                        reject("Invalid authentication token");
-                    }
-                    else {
-                        const post = this.backend.createPost({
-                            user: user,
-                            date: date,
-                            content: content,
-                        });
-                        resolve(post.toJSON());
-                    }
+            return this.authenticate<IPost>(authToken,(resolve,reject,user) => {
+                const post = this.backend.createPost({
+                    user: user,
+                    date: date,
+                    content: content,
                 });
+                resolve(post.toJSON());
             });
         }
 
         public likePost(authToken: string, postId: number): IPromise<IPost> {
-            return this.$q<IPost>((resolve,reject) => {
-                this.delay(() => {
-                    const user = this.userFromAuthToken(authToken);
-                    if (user === undefined) {
-                        reject("Invalid authentication token");
-                        return;
-                    }
+            return this.authenticate<IPost>(authToken,(resolve,reject,user) => {
+                const post = this.backend.postsById[postId];
+                if (post === undefined) {
+                    reject("No such post");
+                    return;
+                }
 
-                    const post = this.backend.postsById[postId];
-                    if (post === undefined) {
-                        reject("No such post");
-                        return;
-                    }
+                const index = post.likedByUsers.indexOf(user);
+                if (index >= 0) {
+                    reject("You already like this post");
+                    return;
+                }
 
-                    const index = post.likedByUsers.indexOf(user);
-                    if (index >= 0) {
-                        reject("You already like this post");
-                        return;
-                    }
+                post.likedByUsers.push(user);
 
-                    post.likedByUsers.push(user);
-
-                    resolve(post.toJSON());
-                });
+                resolve(post.toJSON());
             });
         }
 
         public unlikePost(authToken: string, postId: number): IPromise<IPost> {
-            return this.$q<IPost>((resolve,reject) => {
-                this.delay(() => {
-                    const user = this.userFromAuthToken(authToken);
-                    if (user === undefined) {
-                        reject("Invalid authentication token");
-                        return;
-                    }
+            return this.authenticate<IPost>(authToken,(resolve,reject,user) => {
+                const post = this.backend.postsById[postId];
+                if (post === undefined) {
+                    reject("No such post");
+                    return;
+                }
 
-                    const post = this.backend.postsById[postId];
-                    if (post === undefined) {
-                        reject("No such post");
-                        return;
-                    }
+                const index = post.likedByUsers.indexOf(user);
+                if (index >= 0) {
+                    reject("You do not already like this post");
+                    return;
+                }
 
-                    const index = post.likedByUsers.indexOf(user);
-                    if (index >= 0) {
-                        reject("You do not already like this post");
-                        return;
-                    }
+                post.likedByUsers.splice(index,1);
 
-                    post.likedByUsers.splice(index,1);
-
-                    resolve(post.toJSON());
-                });
+                resolve(post.toJSON());
             });
         }
 
         public getComments(authToken: string, postId: number): IPromise<IComment[]> {
-            return this.$q<IComment[]>((resolve,reject) => {
-                this.delay(() => {
-                    const user = this.userFromAuthToken(authToken);
-                    if (user === undefined) {
-                        reject("Invalid authentication token");
-                        return;
-                    }
+            return this.authenticate<IComment[]>(authToken,(resolve,reject,user) => {
+                const post = this.backend.postsById[postId];
+                if (post === undefined) {
+                    reject("No such post");
+                    return;
+                }
 
-                    const post = this.backend.postsById[postId];
-                    if (post === undefined) {
-                        reject("No such post");
-                        return;
-                    }
-
-                    const result: IComment[] = [];
-                    for (const comment of post.comments)
-                        result.push(comment.toJSON());
-                    resolve(result);
-                });
+                const result: IComment[] = [];
+                for (const comment of post.comments)
+                    result.push(comment.toJSON());
+                resolve(result);
             });
         }
 
         public addComment(authToken: string, postId: number, date: string, content: string): IPromise<IComment> {
-            return this.$q<IComment>((resolve,reject) => {
-                this.delay(() => {
-                    const user = this.userFromAuthToken(authToken);
-                    if (user === undefined) {
-                        reject("Invalid authentication token");
-                        return;
-                    }
+            return this.authenticate<IComment>(authToken,(resolve,reject,user) => {
+                const post = this.backend.postsById[postId];
+                if (post === undefined) {
+                    reject("No such post");
+                    return;
+                }
 
-                    const post = this.backend.postsById[postId];
-                    if (post === undefined) {
-                        reject("No such post");
-                        return;
-                    }
-
-                    const comment = this.backend.createComment({
-                        user: user,
-                        post: post,
-                        date: date,
-                        content: content,
-                    });
-
-                    post.comments.push(comment);
-
-                    resolve(comment.toJSON());
+                const comment = this.backend.createComment({
+                    user: user,
+                    post: post,
+                    date: date,
+                    content: content,
                 });
+
+                post.comments.push(comment);
+
+                resolve(comment.toJSON());
             });
         }
 
         public likeComment(authToken: string, commentId: number): IPromise<IComment> {
-            return this.$q<IComment>((resolve,reject) => {
-                this.delay(() => {
-                    const user = this.userFromAuthToken(authToken);
-                    if (user === undefined) {
-                        reject("Invalid authentication token");
-                        return;
-                    }
+            return this.authenticate<IComment>(authToken,(resolve,reject,user) => {
+                const comment = this.backend.commentsById[commentId];
+                if (comment === undefined) {
+                    reject("No such comment");
+                    return;
+                }
 
-                    const comment = this.backend.commentsById[commentId];
-                    if (comment === undefined) {
-                        reject("No such comment");
-                        return;
-                    }
+                const index = comment.likedByUsers.indexOf(user);
+                if (index >= 0) {
+                    reject("You already like this comment");
+                    return;
+                }
 
-                    const index = comment.likedByUsers.indexOf(user);
-                    if (index >= 0) {
-                        reject("You already like this comment");
-                        return;
-                    }
+                comment.likedByUsers.push(user);
 
-                    comment.likedByUsers.push(user);
-
-                    resolve(comment.toJSON());
-                });
+                resolve(comment.toJSON());
             });
         }
 
         public unlikeComment(authToken: string, commentId: number): IPromise<IComment> {
-            return this.$q<IComment>((resolve,reject) => {
-                this.delay(() => {
-                    const user = this.userFromAuthToken(authToken);
-                    if (user === undefined) {
-                        reject("Invalid authentication token");
-                        return;
-                    }
+            return this.authenticate<IComment>(authToken,(resolve,reject,user) => {
+                const comment = this.backend.commentsById[commentId];
+                if (comment === undefined) {
+                    reject("No such comment");
+                    return;
+                }
 
-                    const comment = this.backend.commentsById[commentId];
-                    if (comment === undefined) {
-                        reject("No such comment");
-                        return;
-                    }
+                const index = comment.likedByUsers.indexOf(user);
+                if (index >= 0) {
+                    reject("You do not already like this comment");
+                    return;
+                }
 
-                    const index = comment.likedByUsers.indexOf(user);
-                    if (index >= 0) {
-                        reject("You do not already like this comment");
-                        return;
-                    }
+                comment.likedByUsers.splice(index,1);
 
-                    comment.likedByUsers.splice(index,1);
-
-                    resolve(comment.toJSON());
-                });
+                resolve(comment.toJSON());
             });
         }
     }
