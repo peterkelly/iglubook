@@ -14,7 +14,7 @@
         "noLib": false,
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
-        "strictNullChecks": false,
+        "strictNullChecks": true,
         "outDir": "../www/js"
     },
     "exclude": [

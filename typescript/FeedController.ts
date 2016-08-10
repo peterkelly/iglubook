@@ -6,7 +6,7 @@
 (function() {
 
     class FeedController {
-        private posts: IAPIPost[] = null;
+        private posts: IAPIPost[] | null = null;
 
         public constructor(
             private $scope: angular.IScope,

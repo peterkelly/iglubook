@@ -6,8 +6,8 @@
 (function() {
 
     class ProfileController {
-        public user: IAPIUser = null;
-        public userError: string = null;
+        public user: IAPIUser | undefined = undefined;
+        public userError: string | undefined = undefined;
         public notifications: boolean = true;
         public countryList: { code: string, name: string }[];
         public countryNamesByCode: { [code: string]: string };
@@ -28,7 +28,9 @@
         }
 
         public updatePressed() {
-            console.log("country = "+this.user.country+", gender = "+this.user.gender);
+            const country = (this.user !== undefined) ? this.user.country : "?";
+            const gender = (this.user !== undefined) ? this.user.gender : "?";
+            console.log("country = "+country+", gender = "+gender);
             this.$ionicLoading.show({ template: "Saving changes..." }).then(() => {
                 this.$timeout(() => this.$ionicLoading.hide(),1000);
             })

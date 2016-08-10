@@ -117,14 +117,17 @@ interface IAPIPost {
         public likePost(post: IAPIPost): IPromise<IAPIPost> {
             return this.$q<IAPIPost>((resolve,reject) => {
                 this.$timeout(() => {
-                    var resultPost: IAPIPost = null;
+                    var resultPost: IAPIPost | null = null;
                     for (var i = 0; i < this.SampleData.posts.length; i++) {
                         if (this.SampleData.posts[i].id == post.id) {
                             this.SampleData.posts[i].likes++;
-                            resultPost = copyPost(this.SampleData.posts[i]);
+                            copyPost(this.SampleData.posts[i]);
                         }
                     }
-                    resolve(resultPost);
+                    if (resultPost !== null)
+                        resolve(resultPost);
+                    else
+                        reject(new Error("Post not found"));
                 },fakeTimeout);
             });
         }
