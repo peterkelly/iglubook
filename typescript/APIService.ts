@@ -11,6 +11,9 @@ interface IAPIService {
     getUser(): IPromise<IUser>;
     newPost(date: Date, content: string): IPromise<IPost>;
     likePost(post: IPost): IPromise<IPost>;
+    getComments(post: IPost): IPromise<IComment[]>;
+    addComment(post: IPost, text: string): IPromise<IComment>;
+    likeComment(comment: IComment): IPromise<void>;
 }
 
 interface IUser {
@@ -31,6 +34,16 @@ interface IPost {
     content: string;
     likes: number;
     comments: number;
+}
+
+interface IComment {
+    commentId: number;
+    postId: number;
+    userId: number;
+    userFullName: number,
+    date: string;
+    likeCount: number;
+    text: string;
 }
 
 (function() {
@@ -70,12 +83,14 @@ interface IPost {
 
     class APIService implements IAPIService {
         private nextPostId: number = 10;
+        private userId: number;
 
         public constructor(
             private $timeout: angular.ITimeoutService,
             private $q: angular.IQService,
             private $http: angular.IHttpService,
             private SampleData: ISampleData) {
+            this.userId = SampleData.users[0].id;
         }
 
         public getFeedContents(): IPromise<IPost[]> {
@@ -131,6 +146,19 @@ interface IPost {
                 },fakeTimeout);
             });
         }
+
+        public getComments(post: IPost): IPromise<IComment[]> {
+            throw new Error("getComments not implemented");
+        }
+
+        public addComment(post: IPost, text: string): IPromise<IComment> {
+            throw new Error("addComment not implemented");
+        }
+
+        public likeComment(comment: IComment): IPromise<void> {
+            throw new Error("likeComment not implemented");
+        }
+
     }
 
     const app = angular.module("iglubook");
