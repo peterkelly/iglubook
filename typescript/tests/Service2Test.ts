@@ -36,15 +36,32 @@ describe("Service2",function() {
     var Service2: IService2;
 
     beforeEach(angular.mock.module("testapp"));
+    beforeEach(angular.mock.module(function($provide: any) {
+        $provide.service("Service1",function() {
+            this.method1 = function(s: string): number {
+                if (s === "special")
+                    return 99;
+                else
+                    return s.length;
+            }
+        })
+    }));
     beforeEach(inject(function(_Service2_: IService2) {
         Service2 = _Service2_;
     }));
 
-    it("method2 should work",function() {
+    it("method2 should work in the standard case",function() {
         expect(Service2).toBeDefined();
         Service2.input = "hello";
         Service2.method2();
         expect(Service2.output).toBe(5);
+    });
+
+    it("method2 in the mock Service1 should return 99 when input is \"special\"",function() {
+        expect(Service2).toBeDefined();
+        Service2.input = "special";
+        Service2.method2();
+        expect(Service2.output).toBe(99);
     });
 
 });
