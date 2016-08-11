@@ -3,6 +3,12 @@
 /// <reference path="../node_modules/@types/cordova/index.d.ts" />
 /// <reference path="../node_modules/@types/ionic/index.d.ts" />
 
+interface IService2 {
+    input: string;
+    output: number;
+    method2(): void;
+}
+
 (function() {
 
     class Service2 {
@@ -12,7 +18,7 @@
         public constructor(private Service1: IService1) {
         }
 
-        public method2() {
+        public method2(): void {
             this.output = this.Service1.method1(this.input);
             console.log("Service2#method2: output = "+this.output);
         }

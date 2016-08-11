@@ -30,3 +30,21 @@ describe("Service1",function() {
         expect(Service1.method1("hello")).toBe(5);
     });
 });
+
+describe("Service2",function() {
+
+    var Service2: IService2;
+
+    beforeEach(angular.mock.module("testapp"));
+    beforeEach(inject(function(_Service2_: IService2) {
+        Service2 = _Service2_;
+    }));
+
+    it("method2 should work",function() {
+        expect(Service2).toBeDefined();
+        Service2.input = "hello";
+        Service2.method2();
+        expect(Service2.output).toBe(5);
+    });
+
+});
