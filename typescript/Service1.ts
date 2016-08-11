@@ -18,7 +18,7 @@ interface IService1 {
         }
     }
 
-    const app = angular.module("iglubook");
-    app.value("Service1",Service1);
+    const app = angular.module("testapp");
+    app.service("Service1",Service1);
 
 })();

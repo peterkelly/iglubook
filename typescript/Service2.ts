@@ -18,7 +18,7 @@
         }
     }
 
-    const app = angular.module("iglubook");
-    app.value("Service2",Service2);
+    const app = angular.module("testapp");
+    app.service("Service2",Service2);
 
 })();
